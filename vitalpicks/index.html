@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VitalPicks.org — Best Health Supplements & Wellness Gadgets</title>
+<meta name="description" content="Honest, science-backed reviews of health supplements and wellness gadgets. Find the best products without the guesswork.">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, 'Inter', sans-serif; background: #f8faf8; color: #111; }
+  a { text-decoration: none; }
+
+  /* Header */
+  header { background: #fff; border-bottom: 1px solid #e8f0e8; padding: 0 24px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .header-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .logo { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 22px; color: #1a6b3a; }
+  .logo span { font-size: 12px; color: #888; font-weight: 400; }
+  nav a { color: #444; font-size: 14px; font-weight: 500; margin-left: 24px; }
+  nav a:hover { color: #1a6b3a; }
+
+  /* Hero */
+  .hero { background: linear-gradient(135deg, #1a6b3a 0%, #2d9b5a 50%, #3dbf6f 100%); color: #fff; padding: 80px 24px; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(255,255,255,0.15); border-radius: 20px; padding: 6px 16px; font-size: 13px; margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(28px, 5vw, 52px); font-weight: 900; line-height: 1.15; margin-bottom: 20px; }
+  .hero h1 em { color: #a8f0c8; font-style: normal; }
+  .hero p { font-size: 18px; opacity: 0.9; line-height: 1.6; margin-bottom: 36px; max-width: 600px; margin-left: auto; margin-right: auto; }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-white { background: #fff; color: #1a6b3a; padding: 14px 28px; border-radius: 30px; font-weight: 700; font-size: 15px; }
+  .btn-outline { background: transparent; color: #fff; padding: 14px 28px; border-radius: 30px; font-weight: 600; font-size: 15px; border: 2px solid rgba(255,255,255,0.5); }
+
+  /* Trust bar */
+  .trust-bar { background: #fff; border-bottom: 1px solid #eee; padding: 14px 24px; }
+  .trust-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+  .trust-inner span { font-size: 13px; color: #555; font-weight: 500; }
+
+  /* Articles */
+  .articles-section { max-width: 1100px; margin: 0 auto; padding: 56px 24px; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
+  .section-header h2 { font-size: 28px; font-weight: 800; }
+  .section-header p { color: #666; font-size: 15px; margin-top: 6px; }
+  .filters { display: flex; gap: 8px; }
+  .filter-btn { padding: 8px 18px; border-radius: 20px; border: none; cursor: pointer; font-weight: 600; font-size: 13px; background: #f0f0f0; color: #555; transition: all 0.2s; }
+  .filter-btn.active { background: #1a6b3a; color: #fff; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 28px; }
+  .card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.07); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+  .card-img { position: relative; }
+  .card-img img { width: 100%; height: 200px; object-fit: cover; }
+  .badge { position: absolute; top: 12px; left: 12px; background: #1a6b3a; color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+  .cat-tag { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.6); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 11px; }
+  .card-body { padding: 20px 22px 24px; }
+  .card-body h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; line-height: 1.4; }
+  .card-body p { font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 16px; }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; }
+  .read-time { font-size: 12px; color: #999; }
+  .read-link { color: #1a6b3a; font-weight: 700; font-size: 13px; }
+
+  /* Newsletter */
+  .newsletter { background: linear-gradient(135deg, #1a6b3a, #2d9b5a); padding: 64px 24px; text-align: center; }
+  .newsletter h2 { color: #fff; font-size: 28px; font-weight: 800; margin: 16px 0 12px; }
+  .newsletter p { color: rgba(255,255,255,0.85); font-size: 16px; margin-bottom: 28px; line-height: 1.6; }
+  .nl-form { display: flex; gap: 10px; max-width: 420px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
+  .nl-form input { flex: 1; min-width: 220px; padding: 14px 18px; border-radius: 30px; border: none; font-size: 15px; outline: none; }
+  .nl-form button { background: #fff; color: #1a6b3a; padding: 14px 24px; border-radius: 30px; border: none; font-weight: 700; font-size: 15px; cursor: pointer; }
+
+  /* Footer */
+  footer { background: #111; color: #aaa; padding: 40px 24px; text-align: center; }
+  .footer-logo { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px; font-weight: 800; color: #fff; font-size: 18px; }
+  footer p { font-size: 13px; line-height: 1.7; max-width: 600px; margin: 0 auto 20px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
+  .footer-links a { color: #888; font-size: 13px; }
+  .copyright { font-size: 12px; color: #555; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">💚 VitalPicks <span>.org</span></div>
+    <nav>
+      <a href="#articles">Reviews</a>
+      <a href="#articles">Supplements</a>
+      <a href="#articles">Gadgets</a>
+      <a href="#newsletter">About</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="hero-badge">🔬 Science-backed health reviews you can trust</div>
+    <h1>Find the Best Health Products —<br><em>Without the Guesswork</em></h1>
+    <p>Honest, in-depth reviews of supplements and wellness gadgets. We research everything so you can buy with confidence.</p>
+    <div class="hero-btns">
+      <a href="#articles" class="btn-white">Browse Reviews →</a>
+      <a href="#newsletter" class="btn-outline">Get Weekly Picks</a>
+    </div>
+  </div>
+</section>
+
+<div class="trust-bar">
+  <div class="trust-inner">
+    <span>✅ Independently Tested</span>
+    <span>🔗 Affiliate Disclosure</span>
+    <span>📊 Data-Driven Reviews</span>
+    <span>🌍 India & USA Picks</span>
+  </div>
+</div>
+
+<section class="articles-section" id="articles">
+  <div class="section-header">
+    <div>
+      <h2>Latest Reviews</h2>
+      <p>Updated weekly with the best finds</p>
+    </div>
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterCards('All', this)">All</button>
+      <button class="filter-btn" onclick="filterCards('Supplements', this)">Supplements</button>
+      <button class="filter-btn" onclick="filterCards('Gadgets', this)">Gadgets</button>
+    </div>
+  </div>
+  <div class="grid" id="card-grid">
+
+    <div class="card" data-category="Supplements">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=600&q=80" alt="Protein Powders">
+        <span class="badge">🏆 Top Pick</span>
+        <span class="cat-tag">Supplements</span>
+      </div>
+      <div class="card-body">
+        <h3>Best Protein Powders of 2026 — Ranked & Reviewed</h3>
+        <p>We tested 20+ protein powders so you don't have to. Here are the top picks for muscle gain, weight loss, and everyday health.</p>
+        <div class="card-footer">
+          <span class="read-time">⏱ 8 min read</span>
+          <a href="#" class="read-link">Read Review →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="Gadgets">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=600&q=80" alt="Fitness Trackers">
+        <span class="badge">⚡ Editor's Choice</span>
+        <span class="cat-tag">Gadgets</span>
+      </div>
+      <div class="card-body">
+        <h3>Best Fitness Trackers 2026 — Complete Buyer's Guide</h3>
+        <p>From budget-friendly bands to premium smartwatches — we break down which fitness tracker is actually worth buying.</p>
+        <div class="card-footer">
+          <span class="read-time">⏱ 10 min read</span>
+          <a href="#" class="read-link">Read Review →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="Supplements">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&q=80" alt="Collagen">
+        <span class="badge">🔥 Trending</span>
+        <span class="cat-tag">Supplements</span>
+      </div>
+      <div class="card-body">
+        <h3>Best Collagen Supplements — What Actually Works in 2026</h3>
+        <p>Collagen is everywhere, but most products are overhyped. We cut through the noise and tell you exactly what to buy.</p>
+        <div class="card-footer">
+          <span class="read-time">⏱ 7 min read</span>
+          <a href="#" class="read-link">Read Review →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="Gadgets">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80" alt="Home Gym">
+        <span class="cat-tag">Gadgets</span>
+      </div>
+      <div class="card-body">
+        <h3>Best Home Gym Equipment 2026 — Build Your Gym on Any Budget</h3>
+        <p>You don't need a $10,000 setup to get fit at home. Here's the best equipment at every price point.</p>
+        <div class="card-footer">
+          <span class="read-time">⏱ 12 min read</span>
+          <a href="#" class="read-link">Read Review →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="Supplements">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80" alt="Vitamins">
+        <span class="cat-tag">Supplements</span>
+      </div>
+      <div class="card-body">
+        <h3>Best Vitamins for Immunity — Science-Backed Picks for 2026</h3>
+        <p>Not all vitamins are created equal. These are the only immunity supplements actually backed by solid research.</p>
+        <div class="card-footer">
+          <span class="read-time">⏱ 9 min read</span>
+          <a href="#" class="read-link">Read Review →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="Gadgets">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1541480601022-2308c0f02487?w=600&q=80" alt="Sleep Gadgets">
+        <span class="badge">⭐ Most Popular</span>
+        <span class="cat-tag">Gadgets</span>
+      </div>
+      <div class="card-body">
+        <h3>Best Sleep Gadgets of 2026 — Wake Up Actually Rested</h3>
+        <p>Sleep tech has exploded. We tested the best gadgets to help you fall asleep faster, sleep deeper, and wake up refreshed.</p>
+        <div class="card-footer">
+          <span class="read-time">⏱ 8 min read</span>
+          <a href="#" class="read-link">Read Review →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="newsletter" id="newsletter">
+  <div>
+    <span style="font-size:40px">📬</span>
+    <h2>Get the Best Health Picks Weekly</h2>
+    <p>Join 10,000+ readers who get our top supplement and gadget finds every week. No spam, ever.</p>
+    <div class="nl-form">
+      <input type="email" placeholder="Enter your email" id="nl-email">
+      <button onclick="subscribe()">Subscribe →</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">💚 VitalPicks.org</div>
+  <p>VitalPicks.org is a participant in the Amazon Associates Program and other affiliate programs. We earn a small commission when you buy through our links — at no extra cost to you. All reviews are our honest opinion.</p>
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Affiliate Disclosure</a>
+    <a href="#">Contact</a>
+    <a href="#">About Us</a>
+  </div>
+  <p class="copyright">© 2026 VitalPicks.org — All rights reserved.</p>
+</footer>
+
+<script>
+  function filterCards(category, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.card').forEach(card => {
+      card.style.display = (category === 'All' || card.dataset.category === category) ? 'block' : 'none';
+    });
+  }
+  function subscribe() {
+    const email = document.getElementById('nl-email').value;
+    if (email) alert('🎉 You\'re subscribed! Welcome to VitalPicks.');
+  }
+</script>
+</body>
+</html>
