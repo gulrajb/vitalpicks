@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact VitalPicks</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8faf8; color: #111; line-height: 1.7; }
+  a { text-decoration: none; color: #1a6b3a; }
+  header { background: #fff; border-bottom: 1px solid #e0ece0; padding: 0 24px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .header-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .logo { font-weight: 800; font-size: 22px; color: #1a6b3a; }
+  nav a { color: #444; font-size: 14px; font-weight: 500; margin-left: 24px; }
+  .wrap { max-width: 600px; margin: 0 auto; padding: 64px 24px 100px; text-align: center; }
+  h1 { font-size: 36px; font-weight: 900; margin-bottom: 16px; }
+  .sub { font-size: 17px; color: #555; margin-bottom: 48px; }
+  .form { background: #fff; border-radius: 16px; padding: 36px; box-shadow: 0 2px 16px rgba(0,0,0,0.08); text-align: left; }
+  label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #333; }
+  input, textarea { width: 100%; padding: 12px 16px; border: 2px solid #e0ece0; border-radius: 10px; font-size: 15px; margin-bottom: 20px; outline: none; font-family: inherit; transition: border-color 0.2s; }
+  input:focus, textarea:focus { border-color: #1a6b3a; }
+  textarea { height: 140px; resize: vertical; }
+  button { background: #1a6b3a; color: #fff; padding: 14px 32px; border-radius: 30px; border: none; font-weight: 700; font-size: 15px; cursor: pointer; width: 100%; }
+  footer { background: #111; color: #888; padding: 32px 24px; text-align: center; font-size: 13px; }
+  footer a { color: #888; margin: 0 12px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo">💚 VitalPicks</a>
+    <nav>
+      <a href="/">Reviews</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html" style="color:#1a6b3a;font-weight:600">Contact</a>
+    </nav>
+  </div>
+</header>
+<div class="wrap">
+  <div style="font-size:52px;margin-bottom:20px">✉️</div>
+  <h1>Get in Touch</h1>
+  <p class="sub">Have a product suggestion, question, or feedback? We read every message and reply within 48 hours.</p>
+  <div class="form">
+    <label>Your Name</label>
+    <input type="text" placeholder="John Smith" id="name">
+    <label>Email Address</label>
+    <input type="email" placeholder="you@email.com" id="email">
+    <label>Message</label>
+    <textarea placeholder="Tell us what's on your mind..." id="msg"></textarea>
+    <button onclick="send()">Send Message →</button>
+  </div>
+</div>
+<footer>
+  <p>© 2026 VitalPicks.org &nbsp;|&nbsp; <a href="/">Home</a> <a href="/privacy.html">Privacy</a> <a href="/affiliate-disclosure.html">Affiliate Disclosure</a></p>
+</footer>
+<script>
+  function send() {
+    const n = document.getElementById('name').value;
+    const e = document.getElementById('email').value;
+    const m = document.getElementById('msg').value;
+    if (n && e && m) { alert('✅ Message sent! We\'ll get back to you within 48 hours.'); }
+    else { alert('Please fill in all fields.'); }
+  }
+</script>
+</body>
+</html>
