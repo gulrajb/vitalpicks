@@ -3,64 +3,241 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact VitalPicks</title>
+<title>Contact VitalPicks — Get in Touch</title>
+<meta name="description" content="Contact VitalPicks for product suggestions, questions, or feedback. We reply within 48 hours.">
 <style>
+  :root { --green: #1a6b3a; --green-light: #e8f5ee; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8faf8; color: #111; line-height: 1.7; }
-  a { text-decoration: none; color: #1a6b3a; }
+  a { text-decoration: none; color: var(--green); }
+  a:focus, button:focus, input:focus, textarea:focus, select:focus { outline: 3px solid #f4a700; outline-offset: 2px; }
+  /* Skip link for screen readers */
+  .skip-link { position: absolute; left: -9999px; top: 8px; background: #000; color: #fff; padding: 8px 16px; border-radius: 4px; font-weight: 700; z-index: 9999; }
+  .skip-link:focus { left: 8px; }
   header { background: #fff; border-bottom: 1px solid #e0ece0; padding: 0 24px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
   .header-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
-  .logo { font-weight: 800; font-size: 22px; color: #1a6b3a; }
+  .logo { font-weight: 900; font-size: 22px; color: var(--green); }
   nav a { color: #444; font-size: 14px; font-weight: 500; margin-left: 24px; }
-  .wrap { max-width: 600px; margin: 0 auto; padding: 64px 24px 100px; text-align: center; }
-  h1 { font-size: 36px; font-weight: 900; margin-bottom: 16px; }
-  .sub { font-size: 17px; color: #555; margin-bottom: 48px; }
-  .form { background: #fff; border-radius: 16px; padding: 36px; box-shadow: 0 2px 16px rgba(0,0,0,0.08); text-align: left; }
-  label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #333; }
-  input, textarea { width: 100%; padding: 12px 16px; border: 2px solid #e0ece0; border-radius: 10px; font-size: 15px; margin-bottom: 20px; outline: none; font-family: inherit; transition: border-color 0.2s; }
-  input:focus, textarea:focus { border-color: #1a6b3a; }
-  textarea { height: 140px; resize: vertical; }
-  button { background: #1a6b3a; color: #fff; padding: 14px 32px; border-radius: 30px; border: none; font-weight: 700; font-size: 15px; cursor: pointer; width: 100%; }
+  nav a:hover { color: var(--green); }
+  .wrap { max-width: 620px; margin: 0 auto; padding: 64px 24px 100px; }
+  .hero-contact { text-align: center; margin-bottom: 48px; }
+  .hero-contact .icon { font-size: 52px; margin-bottom: 16px; }
+  h1 { font-size: 36px; font-weight: 900; margin-bottom: 12px; }
+  .sub { font-size: 17px; color: #555; }
+  .form-card { background: #fff; border-radius: 16px; padding: 40px; box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
+  .form-group { margin-bottom: 24px; }
+  label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 8px; color: #222; }
+  label .required { color: #c0392b; margin-left: 2px; }
+  input[type="text"], input[type="email"], textarea, select {
+    width: 100%; padding: 13px 16px; border: 2px solid #dde8dd;
+    border-radius: 10px; font-size: 15px; font-family: inherit;
+    background: #fff; color: #111; transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+    border-color: var(--green); outline: 3px solid #f4a700; outline-offset: 2px;
+  }
+  input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: #c0392b; }
+  textarea { height: 150px; resize: vertical; }
+  .char-count { font-size: 12px; color: #888; text-align: right; margin-top: 4px; }
+  .btn { background: var(--green); color: #fff; padding: 15px 32px; border-radius: 30px; border: none; font-weight: 700; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s, transform 0.1s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn:hover { background: #155530; }
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled { background: #aaa; cursor: not-allowed; }
+  .success-box { display: none; background: var(--green-light); border: 2px solid var(--green); border-radius: 12px; padding: 24px; text-align: center; margin-top: 24px; }
+  .success-box .icon { font-size: 36px; }
+  .success-box h2 { font-size: 20px; color: var(--green); margin: 8px 0; }
+  .error-box { display: none; background: #fdf2f2; border: 2px solid #c0392b; border-radius: 12px; padding: 16px; margin-bottom: 20px; color: #c0392b; font-weight: 600; font-size: 14px; }
+  .field-error { color: #c0392b; font-size: 13px; margin-top: 4px; display: none; }
+  .info-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 36px; }
+  .info-card { background: #fff; border-radius: 12px; padding: 20px; text-align: center; box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+  .info-card .ic { font-size: 28px; margin-bottom: 8px; }
+  .info-card h3 { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 4px; }
+  .info-card p { font-size: 13px; color: #666; }
+  @media (max-width: 480px) { .info-cards { grid-template-columns: 1fr; } .form-card { padding: 24px; } }
   footer { background: #111; color: #888; padding: 32px 24px; text-align: center; font-size: 13px; }
-  footer a { color: #888; margin: 0 12px; }
+  footer a { color: #aaa; margin: 0 10px; }
+  footer a:hover { color: #fff; }
 </style>
 </head>
 <body>
-<header>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header role="banner">
   <div class="header-inner">
-    <a href="/" class="logo">💚 VitalPicks</a>
-    <nav>
+    <a href="/" class="logo" aria-label="VitalPicks Home">💚 VitalPicks</a>
+    <nav role="navigation" aria-label="Main navigation">
       <a href="/">Reviews</a>
-      <a href="/about.html">About</a>
-      <a href="/contact.html" style="color:#1a6b3a;font-weight:600">Contact</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" aria-current="page" style="color:#1a6b3a;font-weight:700">Contact</a>
     </nav>
   </div>
 </header>
+
+<main id="main-content">
 <div class="wrap">
-  <div style="font-size:52px;margin-bottom:20px">✉️</div>
-  <h1>Get in Touch</h1>
-  <p class="sub">Have a product suggestion, question, or feedback? We read every message and reply within 48 hours.</p>
-  <div class="form">
-    <label>Your Name</label>
-    <input type="text" placeholder="John Smith" id="name">
-    <label>Email Address</label>
-    <input type="email" placeholder="you@email.com" id="email">
-    <label>Message</label>
-    <textarea placeholder="Tell us what's on your mind..." id="msg"></textarea>
-    <button onclick="send()">Send Message →</button>
+
+  <div class="hero-contact">
+    <div class="icon" aria-hidden="true">✉️</div>
+    <h1>Get in Touch</h1>
+    <p class="sub">Product suggestion, question, or feedback? We read every message and reply within 48 hours.</p>
   </div>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <div class="ic" aria-hidden="true">⏱️</div>
+      <h3>Fast Reply</h3>
+      <p>We respond within 48 hours on weekdays</p>
+    </div>
+    <div class="info-card">
+      <div class="ic" aria-hidden="true">🤝</div>
+      <h3>Partnerships</h3>
+      <p>Open to brand collaborations and sponsorships</p>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="error-box" id="error-box" role="alert" aria-live="polite"></div>
+
+    <form id="contact-form"
+          action="https://formspree.io/f/xeojvknv"
+          method="POST"
+          novalidate
+          aria-label="Contact form">
+
+      <div class="form-group">
+        <label for="name">Your Name <span class="required" aria-label="required">*</span></label>
+        <input type="text" id="name" name="name" placeholder="John Smith"
+               autocomplete="name" required aria-required="true"
+               aria-describedby="name-error">
+        <div class="field-error" id="name-error" role="alert">Please enter your name.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address <span class="required" aria-label="required">*</span></label>
+        <input type="email" id="email" name="email" placeholder="you@email.com"
+               autocomplete="email" required aria-required="true"
+               aria-describedby="email-error">
+        <div class="field-error" id="email-error" role="alert">Please enter a valid email address.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="subject">Subject</label>
+        <input type="text" id="subject" name="subject" placeholder="e.g. Product suggestion, Question about a review..."
+               aria-describedby="subject-hint">
+        <div id="subject-hint" style="font-size:12px;color:#888;margin-top:4px;">Optional but helps us reply faster</div>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message <span class="required" aria-label="required">*</span></label>
+        <textarea id="message" name="message" placeholder="Tell us what's on your mind..."
+                  required aria-required="true"
+                  aria-describedby="msg-error char-count"
+                  maxlength="2000"
+                  oninput="updateCount(this)"></textarea>
+        <div class="char-count" id="char-count" aria-live="polite">0 / 2000</div>
+        <div class="field-error" id="msg-error" role="alert">Please enter a message.</div>
+      </div>
+
+      <!-- Honeypot anti-spam -->
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1" aria-hidden="true">
+      <input type="hidden" name="_subject" value="New message from VitalPicks contact form">
+
+      <button type="submit" class="btn" id="submit-btn">
+        <span id="btn-text">Send Message →</span>
+      </button>
+    </form>
+
+    <div class="success-box" id="success-box" role="status" aria-live="polite" tabindex="-1">
+      <div class="icon">🎉</div>
+      <h2>Message Sent!</h2>
+      <p>Thanks for reaching out. We'll get back to you within 48 hours.</p>
+    </div>
+  </div>
+
 </div>
-<footer>
-  <p>© 2026 VitalPicks.org &nbsp;|&nbsp; <a href="/">Home</a> <a href="/privacy.html">Privacy</a> <a href="/affiliate-disclosure.html">Affiliate Disclosure</a></p>
+</main>
+
+<footer role="contentinfo">
+  <p>© 2026 VitalPicks.org &nbsp;|&nbsp;
+    <a href="/">Home</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="affiliate-disclosure.html">Affiliate Disclosure</a>
+  </p>
 </footer>
+
 <script>
-  function send() {
-    const n = document.getElementById('name').value;
-    const e = document.getElementById('email').value;
-    const m = document.getElementById('msg').value;
-    if (n && e && m) { alert('✅ Message sent! We\'ll get back to you within 48 hours.'); }
-    else { alert('Please fill in all fields.'); }
+function updateCount(el) {
+  document.getElementById('char-count').textContent = el.value.length + ' / 2000';
+}
+
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  // Reset errors
+  document.querySelectorAll('.field-error').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('input, textarea').forEach(el => el.removeAttribute('aria-invalid'));
+  document.getElementById('error-box').style.display = 'none';
+
+  // Validate
+  let valid = true;
+  const name = document.getElementById('name');
+  const email = document.getElementById('email');
+  const message = document.getElementById('message');
+
+  if (!name.value.trim()) {
+    document.getElementById('name-error').style.display = 'block';
+    name.setAttribute('aria-invalid', 'true');
+    name.focus();
+    valid = false;
   }
+  if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+    document.getElementById('email-error').style.display = 'block';
+    email.setAttribute('aria-invalid', 'true');
+    if (valid) email.focus();
+    valid = false;
+  }
+  if (!message.value.trim()) {
+    document.getElementById('msg-error').style.display = 'block';
+    message.setAttribute('aria-invalid', 'true');
+    if (valid) message.focus();
+    valid = false;
+  }
+
+  if (!valid) return;
+
+  // Submit
+  const btn = document.getElementById('submit-btn');
+  const btnText = document.getElementById('btn-text');
+  btn.disabled = true;
+  btnText.textContent = 'Sending...';
+
+  try {
+    const formData = new FormData(this);
+    const response = await fetch(this.action, {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (response.ok) {
+      this.style.display = 'none';
+      const successBox = document.getElementById('success-box');
+      successBox.style.display = 'block';
+      successBox.focus();
+    } else {
+      throw new Error('Server error');
+    }
+  } catch (err) {
+    const errorBox = document.getElementById('error-box');
+    errorBox.textContent = 'Something went wrong. Please email us directly at hello@vitalpicks.org';
+    errorBox.style.display = 'block';
+    errorBox.focus();
+    btn.disabled = false;
+    btnText.textContent = 'Send Message →';
+  }
+});
 </script>
 </body>
 </html>
