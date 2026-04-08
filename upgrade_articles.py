@@ -1,0 +1,331 @@
+import os, sys, json, base64, time, re
+import urllib.request, urllib.error
+
+GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN', '')
+REPO = 'gulrajb/vitalpicks'
+AFFILIATE = 'health2099-20'
+
+def gh_get(path):
+    url = f'https://api.github.com/repos/{REPO}/contents/{path}'
+    req = urllib.request.Request(url, headers={
+        'Authorization': f'token {GITHUB_TOKEN}',
+        'Accept': 'application/vnd.github.v3+json'
+    })
+    with urllib.request.urlopen(req) as r:
+        return json.loads(r.read())
+
+def gh_put(path, content_bytes, message, sha):
+    url = f'https://api.github.com/repos/{REPO}/contents/{path}'
+    body = json.dumps({
+        'message': message,
+        'content': base64.b64encode(content_bytes).decode(),
+        'sha': sha
+    }).encode()
+    req = urllib.request.Request(url, data=body, method='PUT', headers={
+        'Authorization': f'token {GITHUB_TOKEN}',
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+    })
+    with urllib.request.urlopen(req) as r:
+        return json.loads(r.read())
+
+def inject_new_shell(old_html, filename):
+    """Wrap existing content in a beautiful new shell while preserving all article content."""
+    
+    # Extract title
+    title_m = re.search(r'<title>(.*?)</title>', old_html, re.DOTALL)
+    title = title_m.group(1) if title_m else 'VitalPicks Review'
+    
+    # Extract meta description
+    desc_m = re.search(r'<meta name="description" content="(.*?)"', old_html)
+    desc = desc_m.group(1) if desc_m else ''
+    
+    # Extract body content between <body> and </body>
+    body_m = re.search(r'<body>(.*?)</body>', old_html, re.DOTALL)
+    if not body_m:
+        return None
+    body = body_m.group(1)
+    
+    # Remove old header and footer from body
+    body = re.sub(r'<header>.*?</header>', '', body, flags=re.DOTALL)
+    body = re.sub(r'<footer>.*?</footer>', '', body, flags=re.DOTALL)
+    body = body.strip()
+    
+    # Detect category for breadcrumb
+    slug = filename.replace('.html','').replace('best-','')
+    cat = 'Supplements'
+    cat_link = '#supplements'
+    fitness_keywords = ['dumbbell','barbell','kettlebell','squat','bench','treadmill','rowing','bike','stationary',
+                        'yoga-mat','resistance','pull-up','jump-rope','battle-rope','foam-roller','massage-gun',
+                        'gym','running','weight-plate','lifting-belt','gym-bag','gym-floor','gym-glove','chalk',
+                        'speed-bag','agility','plyo','medicine-ball','balance','parallette','hand-gripper',
+                        'trx','ab-roller','treadmill-mat','gym-mirror','blender']
+    device_keywords = ['fitness-tracker','smart-scale','blood-pressure','glucose','sleep-tracker',
+                       'pulse-oximeter','posture']
+    wellness_keywords = ['ergonomic','standing-desk','water-bottle','fitness-app']
+    if any(k in slug for k in fitness_keywords):
+        cat = 'Fitness Equipment'; cat_link = '#fitness'
+    elif any(k in slug for k in device_keywords):
+        cat = 'Health Devices'; cat_link = '#health-devices'
+    elif any(k in slug for k in wellness_keywords):
+        cat = 'Wellness'; cat_link = '#wellness'
+
+    slug_clean = filename.replace('.html','').replace('best-','').replace('-',' ').title()
+
+    new_html = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+<meta name="description" content="{desc}">
+<meta property="og:title" content="{title}">
+<meta property="og:description" content="{desc}">
+<meta property="og:type" content="article">
+<link rel="canonical" href="https://www.vitalpicks.org/{filename}">
+<style>
+:root{{--green:#1a6b3a;--green-dark:#134f2b;--green-light:#e8f5ee;--green-mid:#2d9b5a;--accent:#f0a500;--text:#1a1a1a;--text-muted:#5a6672;--border:#e2ece5;--bg:#f7faf8;--white:#fff;--radius:14px;--shadow:0 2px 12px rgba(0,0,0,0.07);}}
+*{{box-sizing:border-box;margin:0;padding:0}}
+html{{scroll-behavior:smooth}}
+body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.7}}
+a{{text-decoration:none;color:var(--green)}}
+img{{max-width:100%;height:auto;display:block}}
+.skip-link{{position:absolute;left:-9999px;top:8px;background:#000;color:#fff;padding:8px 16px;border-radius:4px;font-weight:700;z-index:9999}}
+.skip-link:focus{{left:8px}}
+*:focus-visible{{outline:3px solid var(--accent);outline-offset:2px}}
+/* HEADER */
+header{{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,0.05)}}
+.header-inner{{max-width:1200px;margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}}
+.logo{{font-weight:900;font-size:22px;color:var(--green);display:flex;align-items:center;gap:8px}}
+.logo-icon{{width:32px;height:32px;background:var(--green);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}}
+.main-nav{{display:flex;align-items:center;gap:4px}}
+.main-nav a{{color:var(--text-muted);font-size:14px;font-weight:600;padding:8px 14px;border-radius:8px;transition:all 0.2s}}
+.main-nav a:hover{{color:var(--green);background:var(--green-light)}}
+.menu-toggle{{display:none;background:none;border:2px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:20px}}
+.mobile-nav{{display:none;background:var(--white);border-top:1px solid var(--border);padding:16px 24px;flex-direction:column;gap:4px}}
+.mobile-nav a{{padding:12px 16px;border-radius:8px;color:var(--text);font-weight:600;font-size:15px}}
+.mobile-nav a:hover{{background:var(--green-light);color:var(--green)}}
+.mobile-nav.open{{display:flex}}
+/* LAYOUT */
+.page-wrap{{max-width:1100px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 300px;gap:48px;padding-top:40px;padding-bottom:80px}}
+.article-body{{min-width:0}}
+.sidebar{{position:sticky;top:88px;height:fit-content}}
+/* BREADCRUMB */
+.breadcrumb{{font-size:13px;color:var(--text-muted);margin-bottom:20px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}}
+.breadcrumb a{{color:var(--text-muted)}}
+.breadcrumb a:hover{{color:var(--green)}}
+.breadcrumb span{{color:#bbb}}
+/* ARTICLE META */
+.article-meta{{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center}}
+.meta-badge{{background:var(--green-light);color:var(--green);padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700}}
+.meta-date{{font-size:13px;color:var(--text-muted)}}
+/* HEADINGS */
+.article-body h1{{font-size:clamp(26px,4vw,40px);font-weight:900;line-height:1.15;margin-bottom:20px;letter-spacing:-0.5px;color:var(--text)}}
+.article-body h2{{font-size:24px;font-weight:800;margin:40px 0 14px;color:var(--text);padding-top:8px;border-top:2px solid var(--border)}}
+.article-body h3{{font-size:19px;font-weight:700;margin:28px 0 10px;color:var(--green)}}
+.article-body p{{margin-bottom:16px;font-size:16px;color:#2a2a2a;line-height:1.75}}
+.article-body ul,.article-body ol{{margin:0 0 16px 24px}}
+.article-body li{{margin-bottom:7px;font-size:16px;color:#2a2a2a;line-height:1.6}}
+/* HERO IMAGE */
+.hero-img{{width:100%;height:340px;object-fit:cover;border-radius:var(--radius);margin-bottom:28px}}
+/* TOC */
+.toc{{background:var(--green-light);border-left:4px solid var(--green);border-radius:var(--radius);padding:20px 24px;margin-bottom:32px}}
+.toc h4{{font-size:12px;font-weight:800;color:var(--green);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}}
+.toc ol{{margin-left:18px}}
+.toc li{{font-size:14px;margin-bottom:5px}}
+.toc a{{color:var(--green-dark)}}
+/* PRODUCT CARDS */
+.card{{background:var(--white);border-radius:var(--radius);border:2px solid var(--border);padding:28px;margin-bottom:24px;box-shadow:var(--shadow);transition:all 0.2s}}
+.card.top{{border-color:var(--green);position:relative}}
+.card.top::before{{content:'⭐ TOP PICK';position:absolute;top:-12px;left:24px;background:var(--green);color:#fff;font-size:11px;font-weight:800;padding:3px 12px;border-radius:10px;letter-spacing:0.5px}}
+.rank{{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:800;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.5px}}
+.rank-1{{background:linear-gradient(135deg,#ffd700,#ffb800);color:#7a4f00}}
+.rank-2{{background:#e8e8e8;color:#444}}
+.rank-3{{background:linear-gradient(135deg,#cd7f32,#b8702a);color:#fff}}
+.rank-other{{background:var(--green-light);color:var(--green)}}
+.product-header{{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:10px}}
+.product-name{{font-size:21px;font-weight:900;color:var(--text)}}
+.product-price{{font-size:17px;font-weight:800;color:var(--green)}}
+.stars{{color:#f59e0b;font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:6px}}
+.stars small{{font-size:13px;color:var(--text-muted);font-weight:600}}
+.pros-cons{{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}}
+.pros{{background:#f0f9f4;padding:14px 16px;border-radius:10px;border-left:3px solid var(--green)}}
+.cons{{background:#fff5f5;padding:14px 16px;border-radius:10px;border-left:3px solid #e53e3e}}
+.pros h5{{color:var(--green);font-size:12px;font-weight:800;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px}}
+.cons h5{{color:#e53e3e;font-size:12px;font-weight:800;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px}}
+.pros li,.cons li{{font-size:13px;margin-bottom:4px;line-height:1.5}}
+.btn-group{{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}}
+.btn{{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:30px;font-weight:700;font-size:14px;transition:all 0.2s;border:none;cursor:pointer}}
+.btn-amazon{{background:#FF9900;color:#fff}}
+.btn-amazon:hover{{background:#e68800;transform:translateY(-1px)}}
+.btn-india{{background:var(--green);color:#fff}}
+.btn-india:hover{{background:var(--green-dark);transform:translateY(-1px)}}
+/* VERDICT */
+.verdict{{background:linear-gradient(135deg,var(--green-dark),var(--green-mid));color:#fff;border-radius:var(--radius);padding:28px;margin:36px 0}}
+.verdict h3{{color:#fff;font-size:18px;margin:0 0 10px}}
+.verdict p{{color:rgba(255,255,255,0.9);margin:0;font-size:15px}}
+/* COMPARISON TABLE */
+.comp-table{{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}}
+.comp-table th{{background:var(--green);color:#fff;padding:12px 14px;text-align:left;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}}
+.comp-table td{{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:middle}}
+.comp-table tr:hover td{{background:var(--green-light)}}
+.comp-table tr:nth-child(even) td{{background:#fafcfa}}
+.comp-table .best-pick{{background:linear-gradient(90deg,#e8f5ee,#f0f9f4)!important;font-weight:700}}
+/* SIDEBAR */
+.sidebar-card{{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:20px;margin-bottom:20px;box-shadow:var(--shadow)}}
+.sidebar-card h4{{font-size:14px;font-weight:800;color:var(--text);margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border)}}
+.sidebar-card a{{display:block;font-size:13px;color:var(--text-muted);padding:6px 0;border-bottom:1px solid #f0f0f0;transition:color 0.2s}}
+.sidebar-card a:hover{{color:var(--green)}}
+.quick-pick{{background:linear-gradient(135deg,var(--green),var(--green-mid));color:#fff;border-radius:var(--radius);padding:20px;margin-bottom:20px}}
+.quick-pick h4{{color:#fff;font-size:14px;font-weight:800;margin-bottom:8px}}
+.quick-pick p{{color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:14px}}
+.quick-pick .btn{{background:#fff;color:var(--green);font-size:13px;padding:10px 18px;width:100%;justify-content:center}}
+/* DISCLOSURE */
+.disclosure{{background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:14px 18px;font-size:13px;color:#78350f;margin-top:40px;line-height:1.6}}
+/* FOOTER */
+footer{{background:#0f1f14;color:#6a7e6e;padding:40px 24px 28px;text-align:center}}
+.footer-inner{{max-width:1200px;margin:0 auto}}
+.footer-logo{{font-size:20px;font-weight:900;color:#fff;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px}}
+footer a{{color:#6a7e6e;margin:0 10px;font-size:13px;transition:color 0.2s}}
+footer a:hover{{color:#fff}}
+/* RESPONSIVE */
+@media(max-width:900px){{
+  .page-wrap{{grid-template-columns:1fr;gap:0}}
+  .sidebar{{position:static;margin-top:40px}}
+  .main-nav{{display:none}}
+  .menu-toggle{{display:flex;align-items:center;justify-content:center}}
+}}
+@media(max-width:600px){{
+  .pros-cons{{grid-template-columns:1fr}}
+  .product-header{{flex-direction:column}}
+  .comp-table{{font-size:12px}}
+  .comp-table th,.comp-table td{{padding:8px 10px}}
+}}
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<header role="banner">
+  <div class="header-inner">
+    <a href="/" class="logo" aria-label="VitalPicks Home">
+      <div class="logo-icon" aria-hidden="true">💚</div>VitalPicks
+    </a>
+    <nav class="main-nav" role="navigation" aria-label="Main navigation">
+      <a href="/#supplements">Supplements</a>
+      <a href="/#fitness">Fitness Gear</a>
+      <a href="/#health-devices">Health Devices</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav" onclick="toggleMenu(this)">☰</button>
+  </div>
+  <nav id="mobile-nav" class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+    <a href="/">🏠 Home</a>
+    <a href="/#supplements">💊 Supplements</a>
+    <a href="/#fitness">🏋️ Fitness Gear</a>
+    <a href="/#health-devices">🩺 Health Devices</a>
+    <a href="/about.html">ℹ️ About</a>
+    <a href="/contact.html">✉️ Contact</a>
+  </nav>
+</header>
+<main id="main-content">
+<div class="page-wrap">
+  <article class="article-body" itemscope itemtype="https://schema.org/Article">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span aria-hidden="true">›</span>
+      <a href="/{cat_link}">{cat}</a><span aria-hidden="true">›</span>
+      <span aria-current="page">{slug_clean}</span>
+    </nav>
+    {body}
+    <div class="disclosure" role="note">
+      <strong>⚠️ Affiliate Disclosure:</strong> VitalPicks.org participates in the Amazon Associates Program. 
+      We earn a small commission when you purchase through our links — at no extra cost to you. 
+      This never influences our recommendations. <a href="/affiliate-disclosure.html">Learn more →</a>
+    </div>
+  </article>
+  <aside class="sidebar" aria-label="Sidebar">
+    <div class="quick-pick">
+      <h4>🏆 Quick Top Pick</h4>
+      <p>Based on our research, check the #1 rated option on Amazon.</p>
+      <a href="https://www.amazon.com/s?k={slug.replace('-',' ')}&tag={AFFILIATE}" class="btn" aria-label="View top pick on Amazon">View on Amazon →</a>
+    </div>
+    <div class="sidebar-card">
+      <h4>📋 Related Reviews</h4>
+      <a href="/best-protein-powders.html">Best Protein Powders 2026</a>
+      <a href="/best-creatine.html">Best Creatine 2026</a>
+      <a href="/best-pre-workout.html">Best Pre-Workout 2026</a>
+      <a href="/best-multivitamins.html">Best Multivitamins 2026</a>
+      <a href="/best-omega-3.html">Best Omega-3 2026</a>
+      <a href="/best-probiotics.html">Best Probiotics 2026</a>
+      <a href="/best-ashwagandha.html">Best Ashwagandha 2026</a>
+      <a href="/best-magnesium-supplements.html">Best Magnesium 2026</a>
+    </div>
+    <div class="sidebar-card">
+      <h4>💡 Did You Know?</h4>
+      <p style="font-size:13px;color:var(--text-muted);line-height:1.6">We research every product category thoroughly before making recommendations. Our guides are updated monthly to reflect the latest products and prices.</p>
+    </div>
+  </aside>
+</div>
+</main>
+<footer role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-logo">💚 VitalPicks</div>
+    <p style="font-size:13px;margin-bottom:16px">Honest, science-backed health & fitness reviews</p>
+    <nav aria-label="Footer navigation">
+      <a href="/">Home</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/affiliate-disclosure.html">Affiliate Disclosure</a>
+    </nav>
+    <p style="font-size:12px;margin-top:20px;color:#4a5e4a">© 2026 VitalPicks.org — All rights reserved</p>
+  </div>
+</footer>
+<script>
+function toggleMenu(btn){{
+  const nav=document.getElementById('mobile-nav');
+  const open=nav.classList.toggle('open');
+  btn.setAttribute('aria-expanded',open);
+  btn.textContent=open?'✕':'☰';
+}}
+document.querySelectorAll('.mobile-nav a').forEach(a=>{{
+  a.addEventListener('click',()=>{{
+    document.getElementById('mobile-nav').classList.remove('open');
+    document.querySelector('.menu-toggle').textContent='☰';
+  }});
+}});
+</script>
+</body>
+</html>'''
+    return new_html
+
+# Get all article pages
+resp = gh_get('')
+pages = sorted([f for f in resp if f['name'].startswith('best-') and f['name'].endswith('.html')], key=lambda x: x['name'])
+print(f"Found {len(pages)} article pages to upgrade")
+
+success = 0
+failed = 0
+for i, page in enumerate(pages):
+    fname = page['name']
+    try:
+        data = gh_get(fname)
+        sha = data['sha']
+        old_html = base64.b64decode(data['content']).decode('utf-8')
+        
+        new_html = inject_new_shell(old_html, fname)
+        if not new_html:
+            print(f"  SKIP {fname} — could not parse body")
+            failed += 1
+            continue
+        
+        gh_put(fname, new_html.encode('utf-8'), f'Redesign: {fname} — new layout, sidebar, accessibility', sha)
+        success += 1
+        print(f"  ✅ [{i+1}/{len(pages)}] {fname}")
+        time.sleep(0.5)  # avoid rate limiting
+    except Exception as e:
+        print(f"  ❌ [{i+1}/{len(pages)}] {fname} — {e}")
+        failed += 1
+        time.sleep(1)
+
+print(f"\nDone! ✅ {success} upgraded, ❌ {failed} failed")
