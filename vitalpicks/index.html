@@ -7,200 +7,167 @@
 <meta name="description" content="Expert-reviewed health supplements and fitness equipment. Science-backed, unbiased picks to help you reach your health goals faster.">
 <meta property="og:title" content="VitalPicks — Best Health & Fitness Reviews 2026">
 <meta property="og:description" content="Science-backed reviews on supplements, fitness gear, and wellness devices.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=80">
 <meta property="og:url" content="https://www.vitalpicks.org">
 <meta property="og:type" content="website">
 <link rel="canonical" href="https://www.vitalpicks.org/">
 <style>
-:root {
-  --green: #1a6b3a;
-  --green-dark: #134f2b;
-  --green-light: #e8f5ee;
-  --green-mid: #2d9b5a;
-  --accent: #f0a500;
-  --text: #1a1a1a;
-  --text-muted: #5a6672;
-  --border: #e2ece5;
-  --bg: #f7faf8;
-  --white: #ffffff;
-  --radius: 14px;
-  --shadow: 0 2px 12px rgba(0,0,0,0.07);
-  --shadow-hover: 0 8px 28px rgba(26,107,58,0.14);
-}
+:root{--green:#1a6b3a;--gd:#134f2b;--gl:#e8f5ee;--gm:#2d9b5a;--acc:#f0a500;--tx:#1a1a1a;--txm:#5a6672;--bd:#e2ece5;--bg:#f7faf8;--wh:#fff;--r:14px;--sh:0 2px 16px rgba(0,0,0,.08)}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--tx);line-height:1.6}
 a{text-decoration:none;color:inherit}
 img{max-width:100%;height:auto;display:block}
-
-/* ACCESSIBILITY */
-.skip-link{position:absolute;left:-9999px;top:8px;background:#000;color:#fff;padding:8px 16px;border-radius:4px;font-weight:700;z-index:9999}
-.skip-link:focus{left:8px}
-*:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.skip{position:absolute;left:-9999px;top:8px;background:#000;color:#fff;padding:8px 16px;border-radius:4px;font-weight:700;z-index:9999}.skip:focus{left:8px}
+*:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 
 /* HEADER */
-header{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
-.header-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.logo{font-weight:900;font-size:24px;color:var(--green);letter-spacing:-0.5px;display:flex;align-items:center;gap:8px}
+header{background:var(--wh);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.hi{max-width:1200px;margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{font-weight:900;font-size:24px;color:var(--green);display:flex;align-items:center;gap:8px}
 .logo-icon{width:34px;height:34px;background:var(--green);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
-
-/* Desktop nav */
-.main-nav{display:flex;align-items:center;gap:4px}
-.main-nav a{color:var(--text-muted);font-size:14px;font-weight:600;padding:8px 14px;border-radius:8px;transition:all 0.2s}
-.main-nav a:hover{color:var(--green);background:var(--green-light)}
-.search-btn{background:var(--green-light);border:none;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:14px;font-weight:600;color:var(--green);display:flex;align-items:center;gap:6px}
-
-/* Mobile menu */
-.menu-toggle{display:none;background:none;border:2px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:20px}
-.mobile-nav{display:none;background:var(--white);border-top:1px solid var(--border);padding:16px 24px;flex-direction:column;gap:4px}
-.mobile-nav a{padding:12px 16px;border-radius:8px;color:var(--text);font-weight:600;font-size:15px}
-.mobile-nav a:hover{background:var(--green-light);color:var(--green)}
-.mobile-nav.open{display:flex}
+.mn{display:flex;align-items:center;gap:4px}
+.mn a{color:var(--txm);font-size:14px;font-weight:600;padding:8px 14px;border-radius:8px;transition:all .2s}
+.mn a:hover{color:var(--green);background:var(--gl)}
+.mt{display:none;background:none;border:2px solid var(--bd);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:20px}
+.mob{display:none;background:var(--wh);border-top:1px solid var(--bd);padding:16px 24px;flex-direction:column;gap:4px}
+.mob a{padding:12px 16px;border-radius:8px;color:var(--tx);font-weight:600;font-size:15px}
+.mob a:hover{background:var(--gl);color:var(--green)}
+.mob.open{display:flex}
 
 /* HERO */
-.hero{background:linear-gradient(135deg,var(--green-dark) 0%,var(--green) 50%,var(--green-mid) 100%);color:#fff;padding:80px 24px 72px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
-.hero-inner{max-width:800px;margin:0 auto;text-align:center;position:relative}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:24px;padding:7px 18px;font-size:13px;font-weight:700;margin-bottom:24px;backdrop-filter:blur(8px)}
+.hero{background:linear-gradient(135deg,var(--gd) 0%,var(--green) 50%,var(--gm) 100%);color:#fff;padding:80px 24px 72px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/svg%3E")}
+.hero-inner{max-width:800px;margin:0 auto;text-align:center;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:24px;padding:7px 18px;font-size:13px;font-weight:700;margin-bottom:24px}
 .hero h1{font-size:clamp(32px,5.5vw,58px);font-weight:900;line-height:1.1;margin-bottom:20px;letter-spacing:-1px}
 .hero h1 em{color:#a8f0c8;font-style:normal}
-.hero p{font-size:18px;opacity:0.88;max-width:560px;margin:0 auto 36px;line-height:1.7}
+.hero p{font-size:18px;opacity:.88;max-width:560px;margin:0 auto 36px;line-height:1.7}
 .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.btn-primary{background:#fff;color:var(--green);padding:14px 28px;border-radius:30px;font-weight:800;font-size:15px;transition:all 0.2s;box-shadow:0 4px 16px rgba(0,0,0,0.15)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.2)}
-.btn-secondary{background:rgba(255,255,255,0.15);color:#fff;padding:14px 28px;border-radius:30px;font-weight:700;font-size:15px;border:2px solid rgba(255,255,255,0.35);transition:all 0.2s}
-.btn-secondary:hover{background:rgba(255,255,255,0.25)}
-.hero-stats{display:flex;gap:40px;justify-content:center;margin-top:52px;flex-wrap:wrap}
+.btn-primary{background:#fff;color:var(--green);padding:14px 28px;border-radius:30px;font-weight:800;font-size:15px;transition:all .2s;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.btn-secondary{background:rgba(255,255,255,.15);color:#fff;padding:14px 28px;border-radius:30px;font-weight:700;font-size:15px;border:2px solid rgba(255,255,255,.35);transition:all .2s}
+.btn-secondary:hover{background:rgba(255,255,255,.25)}
+.stats{display:flex;gap:40px;justify-content:center;margin-top:52px;flex-wrap:wrap}
 .stat{text-align:center}
 .stat strong{display:block;font-size:32px;font-weight:900;letter-spacing:-1px}
-.stat span{font-size:13px;opacity:0.75;font-weight:500}
+.stat span{font-size:13px;opacity:.75;font-weight:500}
 
 /* SEARCH */
-.search-section{background:var(--white);padding:28px 24px;border-bottom:1px solid var(--border)}
+.search-section{background:var(--wh);padding:28px 24px;border-bottom:1px solid var(--bd)}
 .search-inner{max-width:640px;margin:0 auto}
-.search-box{display:flex;align-items:center;gap:12px;background:var(--bg);border:2px solid var(--border);border-radius:40px;padding:10px 10px 10px 20px;transition:border-color 0.2s}
+.search-box{display:flex;align-items:center;gap:12px;background:var(--bg);border:2px solid var(--bd);border-radius:40px;padding:10px 10px 10px 20px;transition:border-color .2s}
 .search-box:focus-within{border-color:var(--green)}
-.search-box input{flex:1;border:none;background:none;font-size:15px;color:var(--text);outline:none}
+.search-box input{flex:1;border:none;background:none;font-size:15px;color:var(--tx);outline:none}
 .search-box input::placeholder{color:#aaa}
-.search-box button{background:var(--green);color:#fff;border:none;border-radius:30px;padding:9px 20px;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap}
-.search-tags{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.search-tag{background:var(--green-light);color:var(--green);font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;cursor:pointer;transition:all 0.2s;border:none}
-.search-tag:hover{background:var(--green);color:#fff}
+.search-box button{background:var(--green);color:#fff;border:none;border-radius:30px;padding:9px 20px;font-weight:700;font-size:14px;cursor:pointer}
+.stags{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.stag{background:var(--gl);color:var(--green);font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;cursor:pointer;transition:all .2s;border:none}
+.stag:hover{background:var(--green);color:#fff}
 
-/* FEATURED */
-.featured-section{max-width:1200px;margin:0 auto;padding:52px 24px 0}
-.section-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--green);margin-bottom:10px}
-.section-title{font-size:clamp(22px,3vw,30px);font-weight:900;color:var(--text);margin-bottom:6px}
-.section-subtitle{color:var(--text-muted);font-size:15px;margin-bottom:28px}
-.featured-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+/* SECTION LABELS */
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.sec{padding:56px 0}
+.sec-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--green);margin-bottom:10px}
+.sec-title{font-size:clamp(22px,3vw,30px);font-weight:900;color:var(--tx);margin-bottom:6px}
+.sec-sub{color:var(--txm);font-size:15px;margin-bottom:32px}
 
-/* Featured card */
-.feat-card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);transition:all 0.25s;display:flex;flex-direction:column}
-.feat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:#b8d8c4}
+/* FEATURED GRID */
+.feat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+.feat-card{background:var(--wh);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);border:1px solid var(--bd);transition:all .25s;display:flex;flex-direction:column}
+.feat-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(26,107,58,.15);border-color:#b8d8c4}
 .feat-card.large{grid-column:span 2;grid-row:span 2}
-.card-img{width:100%;aspect-ratio:16/9;object-fit:cover;background:linear-gradient(135deg,#e8f5ee,#c8e6d4)}
-.card-img-placeholder{width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(135deg,var(--green-light),#d4eddc)}
-.feat-card.large .card-img-placeholder{font-size:80px}
-.card-body{padding:20px;flex:1;display:flex;flex-direction:column}
-.card-cat{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:8px}
-.card-body h3{font-size:16px;font-weight:800;line-height:1.35;margin-bottom:8px;color:var(--text)}
-.feat-card.large .card-body h3{font-size:22px}
-.card-body p{font-size:13px;color:var(--text-muted);line-height:1.6;flex:1}
-.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
-.card-read{font-size:13px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:4px}
-.card-read:hover{gap:8px}
-.card-badge{background:var(--accent);color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:0.5px}
+.feat-img{width:100%;height:220px;object-fit:cover}
+.feat-card.large .feat-img{height:320px}
+.feat-body{padding:20px;flex:1;display:flex;flex-direction:column}
+.feat-cat{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:8px}
+.feat-body h3{font-size:16px;font-weight:800;line-height:1.35;margin-bottom:8px;color:var(--tx)}
+.feat-card.large .feat-body h3{font-size:22px}
+.feat-body p{font-size:13px;color:var(--txm);line-height:1.6;flex:1}
+.feat-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:1px solid var(--bd)}
+.feat-link{font-size:13px;font-weight:700;color:var(--green)}
+.feat-badge{background:var(--acc);color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:10px;text-transform:uppercase}
 
-/* CATEGORIES */
-.categories-section{max-width:1200px;margin:0 auto;padding:52px 24px 0}
+/* CATEGORY TILES */
 .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
-.cat-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:22px 18px;display:flex;align-items:center;gap:14px;transition:all 0.2s;cursor:pointer}
-.cat-card:hover{border-color:var(--green);background:var(--green-light);transform:translateY(-2px);box-shadow:var(--shadow)}
-.cat-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.cat-info h3{font-size:14px;font-weight:800;color:var(--text);margin-bottom:2px}
-.cat-info span{font-size:12px;color:var(--text-muted)}
+.cat-card{background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;transition:all .2s;cursor:pointer;display:block}
+.cat-card:hover{border-color:var(--green);transform:translateY(-2px);box-shadow:var(--sh)}
+.cat-img{width:100%;height:100px;object-fit:cover}
+.cat-info{padding:12px 14px;display:flex;align-items:center;gap:10px}
+.cat-info h3{font-size:14px;font-weight:800;color:var(--tx)}
+.cat-info span{font-size:12px;color:var(--txm)}
 
-/* ARTICLES GRID */
-.articles-section{max-width:1200px;margin:0 auto;padding:52px 24px}
-.articles-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
-.view-all{font-size:13px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:4px;background:var(--green-light);padding:8px 16px;border-radius:20px;transition:all 0.2s}
-.view-all:hover{background:var(--green);color:#fff}
-.articles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
-.article-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;transition:all 0.25s;display:flex;flex-direction:column}
-.article-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:#b8d8c4}
-.article-img{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:44px;flex-shrink:0}
-.article-content{padding:16px;flex:1;display:flex;flex-direction:column}
-.article-cat{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;color:var(--green);margin-bottom:6px}
-.article-content h3{font-size:15px;font-weight:800;line-height:1.35;color:var(--text);margin-bottom:6px;flex:1}
-.article-content p{font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.5}
-.article-link{font-size:12px;font-weight:700;color:var(--green)}
+/* ARTICLE GRID */
+.art-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.art-card{background:var(--wh);border-radius:var(--r);border:1px solid var(--bd);overflow:hidden;transition:all .25s;display:flex;flex-direction:column}
+.art-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(26,107,58,.12);border-color:#b8d8c4}
+.art-img{width:100%;height:160px;object-fit:cover}
+.art-body{padding:16px;flex:1;display:flex;flex-direction:column}
+.art-cat{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--green);margin-bottom:6px}
+.art-body h3{font-size:15px;font-weight:800;line-height:1.35;color:var(--tx);margin-bottom:6px;flex:1}
+.art-body p{font-size:12px;color:var(--txm);margin-bottom:12px;line-height:1.5}
+.art-link{font-size:12px;font-weight:700;color:var(--green)}
 
-/* TRUST SECTION */
-.trust-section{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;padding:60px 24px;margin-top:52px}
+/* SHOW MORE */
+.show-more-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gl);color:var(--green);padding:12px 24px;border-radius:30px;font-weight:700;cursor:pointer;font-size:14px;border:none;margin-top:28px}
+.show-more-btn:hover{background:var(--green);color:#fff}
+.hidden-arts{display:none}
+.hidden-arts.visible{display:grid}
+
+/* TRUST */
+.trust-sec{background:linear-gradient(135deg,var(--gd),var(--green));color:#fff;padding:64px 24px}
 .trust-inner{max-width:1000px;margin:0 auto;text-align:center}
 .trust-inner h2{font-size:clamp(24px,3.5vw,36px);font-weight:900;margin-bottom:12px}
-.trust-inner p{font-size:16px;opacity:0.85;max-width:560px;margin:0 auto 40px}
-.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.trust-inner>p{font-size:16px;opacity:.85;max-width:560px;margin:0 auto 44px}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
 .trust-item{text-align:center}
-.trust-icon{font-size:32px;margin-bottom:10px}
+.trust-img{width:64px;height:64px;border-radius:50%;object-fit:cover;margin:0 auto 12px;border:3px solid rgba(255,255,255,.3)}
 .trust-item h3{font-size:15px;font-weight:800;margin-bottom:4px}
-.trust-item p{font-size:13px;opacity:0.75}
+.trust-item p{font-size:13px;opacity:.75}
 
 /* NEWSLETTER */
-.newsletter{background:var(--white);padding:52px 24px;border-top:1px solid var(--border)}
-.newsletter-inner{max-width:520px;margin:0 auto;text-align:center}
-.newsletter h2{font-size:24px;font-weight:900;margin-bottom:8px}
-.newsletter p{color:var(--text-muted);margin-bottom:24px}
+.nl-sec{background:var(--wh);padding:56px 24px;border-top:1px solid var(--bd)}
+.nl-inner{max-width:520px;margin:0 auto;text-align:center}
+.nl-inner h2{font-size:24px;font-weight:900;margin-bottom:8px}
+.nl-inner>p{color:var(--txm);margin-bottom:24px}
 .nl-form{display:flex;gap:10px;flex-wrap:wrap}
-.nl-form input{flex:1;min-width:200px;padding:13px 18px;border:2px solid var(--border);border-radius:30px;font-size:14px;outline:none;transition:border-color 0.2s}
+.nl-form input{flex:1;min-width:200px;padding:13px 18px;border:2px solid var(--bd);border-radius:30px;font-size:14px;outline:none;transition:border-color .2s}
 .nl-form input:focus{border-color:var(--green)}
-.nl-form button{background:var(--green);color:#fff;padding:13px 24px;border-radius:30px;border:none;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap}
+.nl-form button{background:var(--green);color:#fff;padding:13px 24px;border-radius:30px;border:none;font-weight:700;font-size:14px;cursor:pointer}
 
 /* FOOTER */
-footer{background:#0f1f14;color:#8a9e90;padding:52px 24px 32px}
-.footer-inner{max-width:1200px;margin:0 auto}
-.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
-.footer-brand .logo{color:#fff;font-size:22px;margin-bottom:12px}
-.footer-brand p{font-size:13px;line-height:1.7;color:#6a7e6e;max-width:260px}
-.footer-col h4{color:#fff;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:16px}
-.footer-col a{display:block;color:#6a7e6e;font-size:13px;margin-bottom:8px;transition:color 0.2s}
-.footer-col a:hover{color:#fff}
-.footer-bottom{border-top:1px solid #1e3324;padding-top:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.footer-bottom p{font-size:12px}
-.footer-legal{display:flex;gap:16px;flex-wrap:wrap}
-.footer-legal a{font-size:12px;color:#6a7e6e}
-.footer-legal a:hover{color:#fff}
+footer{background:#0f1f14;color:#6a7e6e;padding:52px 24px 32px}
+.foot-inner{max-width:1200px;margin:0 auto}
+.foot-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.foot-brand .flogo{font-size:22px;font-weight:900;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.foot-brand p{font-size:13px;line-height:1.7;color:#6a7e6e;max-width:260px}
+.foot-col h4{color:#fff;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-bottom:16px}
+.foot-col a{display:block;color:#6a7e6e;font-size:13px;margin-bottom:8px;transition:color .2s}
+.foot-col a:hover{color:#fff}
+.foot-bot{border-top:1px solid #1e3324;padding-top:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.foot-bot p{font-size:12px}
+.foot-legal{display:flex;gap:16px}
+.foot-legal a{font-size:12px;color:#6a7e6e}
+.foot-legal a:hover{color:#fff}
+
+/* SECTION ALT BG */
+.sec-alt{background:var(--wh)}
 
 /* RESPONSIVE */
-@media(max-width:900px){
-  .featured-grid{grid-template-columns:1fr 1fr}
-  .feat-card.large{grid-column:span 2}
-  .trust-grid{grid-template-columns:repeat(2,1fr)}
-  .footer-top{grid-template-columns:1fr 1fr}
-}
-@media(max-width:640px){
-  .main-nav{display:none}
-  .menu-toggle{display:flex;align-items:center;justify-content:center}
-  .featured-grid{grid-template-columns:1fr}
-  .feat-card.large{grid-column:span 1}
-  .trust-grid{grid-template-columns:1fr 1fr}
-  .footer-top{grid-template-columns:1fr}
-  .hero-stats{gap:24px}
-  .stat strong{font-size:24px}
-}
+@media(max-width:960px){.feat-grid{grid-template-columns:1fr 1fr}.feat-card.large{grid-column:span 2}.trust-grid{grid-template-columns:repeat(2,1fr)}.foot-top{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.mn{display:none}.mt{display:flex;align-items:center;justify-content:center}.feat-grid{grid-template-columns:1fr}.feat-card.large{grid-column:span 1}.trust-grid{grid-template-columns:1fr 1fr}.foot-top{grid-template-columns:1fr}.stats{gap:24px}.stat strong{font-size:24px}}
 </style>
 </head>
 <body>
 
-<a href="#main-content" class="skip-link">Skip to main content</a>
+<a href="#main" class="skip">Skip to main content</a>
 
-<!-- HEADER -->
 <header role="banner">
-  <div class="header-inner">
+  <div class="hi">
     <a href="/" class="logo" aria-label="VitalPicks Home">
-      <div class="logo-icon" aria-hidden="true">💚</div>
-      VitalPicks
+      <div class="logo-icon" aria-hidden="true">💚</div>VitalPicks
     </a>
-    <nav class="main-nav" role="navigation" aria-label="Main navigation">
+    <nav class="mn" role="navigation" aria-label="Main navigation">
       <a href="#supplements">Supplements</a>
       <a href="#fitness">Fitness Gear</a>
       <a href="#health-devices">Health Devices</a>
@@ -208,9 +175,9 @@ footer{background:#0f1f14;color:#8a9e90;padding:52px 24px 32px}
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
     </nav>
-    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav" onclick="toggleMenu(this)">☰</button>
+    <button class="mt" aria-label="Open menu" aria-expanded="false" aria-controls="mobn" onclick="toggleMenu(this)">☰</button>
   </div>
-  <nav id="mobile-nav" class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+  <nav id="mobn" class="mob" role="navigation" aria-label="Mobile navigation">
     <a href="#supplements">💊 Supplements</a>
     <a href="#fitness">🏋️ Fitness Gear</a>
     <a href="#health-devices">🩺 Health Devices</a>
@@ -220,23 +187,23 @@ footer{background:#0f1f14;color:#8a9e90;padding:52px 24px 32px}
   </nav>
 </header>
 
-<main id="main-content">
+<main id="main">
 
 <!-- HERO -->
 <section class="hero" aria-label="Hero">
   <div class="hero-inner">
-    <div class="hero-badge" aria-label="Trusted health reviews 2026">🌿 Trusted Health Reviews 2026</div>
+    <div class="hero-badge">🌿 Trusted Health Reviews 2026</div>
     <h1>Find the <em>Best</em> Health &<br>Fitness Products</h1>
     <p>Science-backed, expert reviews on supplements, fitness gear, and wellness devices. No sponsored content — just honest picks.</p>
     <div class="hero-cta">
       <a href="#supplements" class="btn-primary">Browse Supplements →</a>
       <a href="#fitness" class="btn-secondary">Fitness Gear</a>
     </div>
-    <div class="hero-stats" role="list" aria-label="Site statistics">
-      <div class="stat" role="listitem"><strong>100+</strong><span>In-Depth Reviews</span></div>
-      <div class="stat" role="listitem"><strong>500+</strong><span>Products Tested</span></div>
-      <div class="stat" role="listitem"><strong>100%</strong><span>Independent</span></div>
-      <div class="stat" role="listitem"><strong>2026</strong><span>Up to Date</span></div>
+    <div class="stats">
+      <div class="stat"><strong>200+</strong><span>In-Depth Reviews</span></div>
+      <div class="stat"><strong>500+</strong><span>Products Tested</span></div>
+      <div class="stat"><strong>100%</strong><span>Independent</span></div>
+      <div class="stat"><strong>2026</strong><span>Up to Date</span></div>
     </div>
   </div>
 </section>
@@ -245,423 +212,379 @@ footer{background:#0f1f14;color:#8a9e90;padding:52px 24px 32px}
 <section class="search-section" aria-label="Search reviews">
   <div class="search-inner">
     <form class="search-box" role="search" onsubmit="doSearch(event)">
-      <label for="site-search" class="sr-only" style="position:absolute;left:-9999px">Search VitalPicks</label>
-      <input type="search" id="site-search" placeholder="Search reviews… e.g. creatine, yoga mat, protein powder" autocomplete="off">
+      <input type="search" id="site-search" placeholder="Search reviews… creatine, yoga mat, protein powder" autocomplete="off" aria-label="Search VitalPicks">
       <button type="submit">🔍 Search</button>
     </form>
-    <div class="search-tags" aria-label="Popular searches">
-      <button class="search-tag" onclick="searchFor('protein powder')">Protein Powder</button>
-      <button class="search-tag" onclick="searchFor('creatine')">Creatine</button>
-      <button class="search-tag" onclick="searchFor('pre workout')">Pre-Workout</button>
-      <button class="search-tag" onclick="searchFor('yoga mat')">Yoga Mat</button>
-      <button class="search-tag" onclick="searchFor('multivitamin')">Multivitamins</button>
-      <button class="search-tag" onclick="searchFor('resistance bands')">Resistance Bands</button>
+    <div class="stags">
+      <button class="stag" onclick="searchFor('protein powder')">Protein Powder</button>
+      <button class="stag" onclick="searchFor('creatine')">Creatine</button>
+      <button class="stag" onclick="searchFor('pre workout')">Pre-Workout</button>
+      <button class="stag" onclick="searchFor('yoga mat')">Yoga Mat</button>
+      <button class="stag" onclick="searchFor('multivitamin')">Multivitamins</button>
+      <button class="stag" onclick="searchFor('omega-3')">Omega-3</button>
     </div>
   </div>
 </section>
 
-<!-- FEATURED -->
-<section class="featured-section" aria-labelledby="featured-heading">
-  <div class="section-label">Editor's Picks</div>
-  <h2 class="section-title" id="featured-heading">Most Popular Reviews</h2>
-  <p class="section-subtitle">Our top-read guides, updated for 2026</p>
-  <div class="featured-grid">
+<!-- FEATURED PICKS -->
+<section class="sec" aria-labelledby="feat-h">
+  <div class="wrap">
+    <div class="sec-label">Editor's Picks</div>
+    <h2 class="sec-title" id="feat-h">Most Popular Reviews</h2>
+    <p class="sec-sub">Our top-read guides, updated for 2026</p>
+    <div class="feat-grid">
 
-    <a href="best-protein-powders.html" class="feat-card large">
-      <div class="card-img-placeholder" style="background:linear-gradient(135deg,#e8f5ee,#b8dfc8)" aria-hidden="true">🥛</div>
-      <div class="card-body">
-        <div class="card-cat">Protein · Most Read</div>
-        <h3>Best Protein Powders of 2026</h3>
-        <p>We tested 30+ protein powders for taste, mixability, ingredient quality, and value. These are the ones actually worth buying — from budget picks to premium options.</p>
-        <div class="card-footer">
-          <span class="card-read">Read Full Guide →</span>
-          <span class="card-badge">Top Pick</span>
+      <a href="best-protein-powders.html" class="feat-card large">
+        <img src="https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=800&q=80" alt="Protein powder shaker and supplements" class="feat-img" loading="lazy">
+        <div class="feat-body">
+          <div class="feat-cat">Protein · Most Read</div>
+          <h3>Best Protein Powders of 2026</h3>
+          <p>We tested 30+ protein powders for taste, mixability, ingredient quality, and value. These are the ones actually worth buying — from budget picks to premium options.</p>
+          <div class="feat-foot">
+            <span class="feat-link">Read Full Guide →</span>
+            <span class="feat-badge">Top Pick</span>
+          </div>
         </div>
-      </div>
-    </a>
+      </a>
 
-    <a href="best-creatine.html" class="feat-card">
-      <div class="card-img-placeholder" style="background:linear-gradient(135deg,#eef4ff,#c8d8f5)" aria-hidden="true">💪</div>
-      <div class="card-body">
-        <div class="card-cat">Supplements</div>
-        <h3>Best Creatine Supplements 2026</h3>
-        <p>The most researched supplement in sports science. Our top picks for strength and muscle.</p>
-        <div class="card-footer">
-          <span class="card-read">Read Guide →</span>
+      <a href="best-creatine.html" class="feat-card">
+        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80" alt="Athlete training with supplements" class="feat-img" loading="lazy">
+        <div class="feat-body">
+          <div class="feat-cat">Supplements</div>
+          <h3>Best Creatine Supplements 2026</h3>
+          <p>The most researched supplement in sports science. Our top picks for strength and muscle.</p>
+          <div class="feat-foot"><span class="feat-link">Read Guide →</span></div>
         </div>
-      </div>
-    </a>
+      </a>
 
-    <a href="best-pre-workout.html" class="feat-card">
-      <div class="card-img-placeholder" style="background:linear-gradient(135deg,#fff4e8,#fde0b0)" aria-hidden="true">⚡</div>
-      <div class="card-body">
-        <div class="card-cat">Pre-Workout</div>
-        <h3>Best Pre-Workout Supplements 2026</h3>
-        <p>Energy, focus, and performance. We tested them so you don't have to.</p>
-        <div class="card-footer">
-          <span class="card-read">Read Guide →</span>
+      <a href="best-pre-workout.html" class="feat-card">
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80" alt="Pre-workout supplement and gym" class="feat-img" loading="lazy">
+        <div class="feat-body">
+          <div class="feat-cat">Pre-Workout</div>
+          <h3>Best Pre-Workout Supplements 2026</h3>
+          <p>Energy, focus, and performance. We tested them so you don't have to.</p>
+          <div class="feat-foot"><span class="feat-link">Read Guide →</span></div>
         </div>
-      </div>
-    </a>
+      </a>
 
-    <a href="best-multivitamins.html" class="feat-card">
-      <div class="card-img-placeholder" style="background:linear-gradient(135deg,#f4e8ff,#dbb8f5)" aria-hidden="true">💊</div>
-      <div class="card-body">
-        <div class="card-cat">Daily Essentials</div>
-        <h3>Best Multivitamins of 2026</h3>
-        <p>Complete your nutrition gaps with the best tested multivitamins for men and women.</p>
-        <div class="card-footer">
-          <span class="card-read">Read Guide →</span>
+      <a href="best-multivitamins.html" class="feat-card">
+        <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80" alt="Multivitamin supplements" class="feat-img" loading="lazy">
+        <div class="feat-body">
+          <div class="feat-cat">Daily Essentials</div>
+          <h3>Best Multivitamins of 2026</h3>
+          <p>Complete your nutrition gaps with the best tested multivitamins for men and women.</p>
+          <div class="feat-foot"><span class="feat-link">Read Guide →</span></div>
         </div>
-      </div>
-    </a>
+      </a>
 
-    <a href="best-yoga-mats.html" class="feat-card">
-      <div class="card-img-placeholder" style="background:linear-gradient(135deg,#e8fff4,#b0f0d0)" aria-hidden="true">🧘</div>
-      <div class="card-body">
-        <div class="card-cat">Fitness Gear</div>
-        <h3>Best Yoga Mats 2026</h3>
-        <p>Grip, cushion, durability — we reviewed the top mats for every level.</p>
-        <div class="card-footer">
-          <span class="card-read">Read Guide →</span>
+      <a href="best-yoga-mats.html" class="feat-card">
+        <img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=600&q=80" alt="Yoga mat and workout" class="feat-img" loading="lazy">
+        <div class="feat-body">
+          <div class="feat-cat">Fitness Gear</div>
+          <h3>Best Yoga Mats 2026</h3>
+          <p>Grip, cushion, durability — we reviewed the top mats for every level.</p>
+          <div class="feat-foot"><span class="feat-link">Read Guide →</span></div>
         </div>
-      </div>
-    </a>
+      </a>
 
+    </div>
   </div>
 </section>
 
 <!-- CATEGORIES -->
-<section class="categories-section" aria-labelledby="cats-heading">
-  <div style="margin-bottom:28px">
-    <div class="section-label">Browse by Category</div>
-    <h2 class="section-title" id="cats-heading">What are you looking for?</h2>
-  </div>
-  <div class="cat-grid" role="list">
-    <a href="#supplements" class="cat-card" role="listitem">
-      <div class="cat-icon" style="background:#e8f5ee" aria-hidden="true">💊</div>
-      <div class="cat-info"><h3>Supplements</h3><span>40+ reviews</span></div>
-    </a>
-    <a href="#fitness" class="cat-card" role="listitem">
-      <div class="cat-icon" style="background:#eef4ff" aria-hidden="true">🏋️</div>
-      <div class="cat-info"><h3>Fitness Equipment</h3><span>35+ reviews</span></div>
-    </a>
-    <a href="#health-devices" class="cat-card" role="listitem">
-      <div class="cat-icon" style="background:#fff4e8" aria-hidden="true">🩺</div>
-      <div class="cat-info"><h3>Health Devices</h3><span>12+ reviews</span></div>
-    </a>
-    <a href="#wellness" class="cat-card" role="listitem">
-      <div class="cat-icon" style="background:#f4e8ff" aria-hidden="true">🧘</div>
-      <div class="cat-info"><h3>Wellness & Recovery</h3><span>10+ reviews</span></div>
-    </a>
-    <a href="best-protein-powders.html" class="cat-card" role="listitem">
-      <div class="cat-icon" style="background:#e8fff4" aria-hidden="true">🥛</div>
-      <div class="cat-info"><h3>Protein</h3><span>8+ reviews</span></div>
-    </a>
-    <a href="best-home-gym.html" class="cat-card" role="listitem">
-      <div class="cat-icon" style="background:#fff0f0" aria-hidden="true">🏠</div>
-      <div class="cat-info"><h3>Home Gym</h3><span>20+ reviews</span></div>
-    </a>
-    <a href="best-weight-loss-supplements.html" class="cat-card" role="listitem">
-      <div class="cat-icon" style="background:#fefae8" aria-hidden="true">⚖️</div>
-      <div class="cat-info"><h3>Weight Loss</h3><span>6+ reviews</span></div>
-    </a>
-    <a href="best-sleep-supplements.html" class="cat-card" role="listitem">
-      <div class="cat-icon" style="background:#e8eeff" aria-hidden="true">😴</div>
-      <div class="cat-info"><h3>Sleep & Recovery</h3><span>5+ reviews</span></div>
-    </a>
+<section class="sec sec-alt" aria-labelledby="cat-h">
+  <div class="wrap">
+    <div class="sec-label">Browse by Category</div>
+    <h2 class="sec-title" id="cat-h">What are you looking for?</h2>
+    <div class="cat-grid">
+      <a href="#supplements" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=70" alt="Supplements" class="cat-img" loading="lazy">
+        <div class="cat-info"><div><h3>Supplements</h3><span>40+ reviews</span></div></div>
+      </a>
+      <a href="#fitness" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&q=70" alt="Fitness Equipment" class="cat-img" loading="lazy">
+        <div class="cat-info"><div><h3>Fitness Equipment</h3><span>35+ reviews</span></div></div>
+      </a>
+      <a href="#health-devices" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&q=70" alt="Health Devices" class="cat-img" loading="lazy">
+        <div class="cat-info"><div><h3>Health Devices</h3><span>12+ reviews</span></div></div>
+      </a>
+      <a href="best-protein-powders.html" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=400&q=70" alt="Protein" class="cat-img" loading="lazy">
+        <div class="cat-info"><div><h3>Protein</h3><span>8+ reviews</span></div></div>
+      </a>
+      <a href="best-home-gym.html" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=400&q=70" alt="Home Gym" class="cat-img" loading="lazy">
+        <div class="cat-info"><div><h3>Home Gym</h3><span>20+ reviews</span></div></div>
+      </a>
+      <a href="best-weight-loss-supplements.html" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&q=70" alt="Weight Loss" class="cat-img" loading="lazy">
+        <div class="cat-info"><div><h3>Weight Loss</h3><span>6+ reviews</span></div></div>
+      </a>
+      <a href="best-sleep-supplements.html" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1455642305367-68834a9a7729?w=400&q=70" alt="Sleep" class="cat-img" loading="lazy">
+        <div class="cat-info"><div><h3>Sleep & Recovery</h3><span>5+ reviews</span></div></div>
+      </a>
+      <a href="#wellness" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&q=70" alt="Wellness" class="cat-img" loading="lazy">
+        <div class="cat-info"><div><h3>Wellness</h3><span>10+ reviews</span></div></div>
+      </a>
+    </div>
   </div>
 </section>
 
-<!-- SUPPLEMENTS SECTION -->
-<section class="articles-section" id="supplements" aria-labelledby="supps-heading">
-  <div class="articles-header">
-    <div>
-      <div class="section-label">Supplements</div>
-      <h2 class="section-title" id="supps-heading">Top Supplement Reviews</h2>
+<!-- SUPPLEMENTS -->
+<section class="sec" id="supplements" aria-labelledby="supp-h">
+  <div class="wrap">
+    <div class="sec-label">Supplements</div>
+    <h2 class="sec-title" id="supp-h">Top Supplement Reviews</h2>
+    <div class="art-grid">
+
+      <a href="best-ashwagandha.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=500&q=70" alt="Ashwagandha supplements" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Adaptogens</div><h3>Best Ashwagandha Supplements 2026</h3><p>Reduce stress, boost energy, and improve sleep quality.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-omega-3.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1535185384036-28bbc8035f28?w=500&q=70" alt="Omega-3 fish oil supplements" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Essential Fats</div><h3>Best Omega-3 Supplements 2026</h3><p>Heart health, brain function, and inflammation support.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-vitamin-d-supplements.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=500&q=70" alt="Vitamin D supplements" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Vitamins</div><h3>Best Vitamin D Supplements 2026</h3><p>The sunshine vitamin — essential for immunity and bones.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-magnesium-supplements.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=500&q=70" alt="Magnesium supplements" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Minerals</div><h3>Best Magnesium Supplements 2026</h3><p>Sleep, muscle recovery, and stress reduction.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-probiotics.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=500&q=70" alt="Probiotic supplements" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Gut Health</div><h3>Best Probiotics 2026</h3><p>Improve digestion, immunity, and gut microbiome.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-collagen-supplements.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=500&q=70" alt="Collagen supplements" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Skin & Joints</div><h3>Best Collagen Supplements 2026</h3><p>Skin elasticity, joint health, and hair growth.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-nootropics.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=500&q=70" alt="Nootropic brain supplements" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Brain Health</div><h3>Best Nootropics 2026</h3><p>Focus, memory, and mental clarity supplements reviewed.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-greens-powders.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=500&q=70" alt="Greens powder supplement" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Superfoods</div><h3>Best Greens Powders 2026</h3><p>Daily nutrition packed into one convenient scoop.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-sleep-supplements.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=500&q=70" alt="Sleep supplements" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Sleep</div><h3>Best Sleep Supplements 2026</h3><p>Fall asleep faster and wake up refreshed.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-bcaa.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1579126038374-6064e9370f0f?w=500&q=70" alt="BCAA supplements" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Recovery</div><h3>Best BCAA Supplements 2026</h3><p>Muscle recovery and endurance for serious athletes.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-turmeric-supplements.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=500&q=70" alt="Turmeric supplements" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Anti-Inflammatory</div><h3>Best Turmeric Supplements 2026</h3><p>Natural anti-inflammatory with powerful curcumin content.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-multivitamins-for-women.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=500&q=70" alt="Women's multivitamins" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Women's Health</div><h3>Best Multivitamins for Women 2026</h3><p>Tailored nutrition for women's unique health needs.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
     </div>
-  </div>
-  <div class="articles-grid">
-    <a href="best-ashwagandha.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8f5ee,#c8e0d0)" aria-hidden="true">🌿</div>
-      <div class="article-content"><div class="article-cat">Adaptogens</div><h3>Best Ashwagandha Supplements 2026</h3><p>Reduce stress, boost energy, and improve sleep quality.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-omega-3.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8f0ff,#c8d8f5)" aria-hidden="true">🐟</div>
-      <div class="article-content"><div class="article-cat">Essential Fats</div><h3>Best Omega-3 Supplements 2026</h3><p>Heart health, brain function, and inflammation support.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-vitamin-d-supplements.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#fffae8,#fde8b0)" aria-hidden="true">☀️</div>
-      <div class="article-content"><div class="article-cat">Vitamins</div><h3>Best Vitamin D Supplements 2026</h3><p>The sunshine vitamin — essential for immunity and bones.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-magnesium-supplements.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#f0e8ff,#d8c0f0)" aria-hidden="true">🔮</div>
-      <div class="article-content"><div class="article-cat">Minerals</div><h3>Best Magnesium Supplements 2026</h3><p>Sleep, muscle recovery, and stress reduction.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-probiotics.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8fff0,#b0f0c8)" aria-hidden="true">🦠</div>
-      <div class="article-content"><div class="article-cat">Gut Health</div><h3>Best Probiotics 2026</h3><p>Improve digestion, immunity, and gut microbiome health.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-collagen-supplements.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#ffe8f0,#f0b8c8)" aria-hidden="true">✨</div>
-      <div class="article-content"><div class="article-cat">Skin & Joints</div><h3>Best Collagen Supplements 2026</h3><p>Skin elasticity, joint health, and hair growth.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-nootropics.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8f0ff,#b0c8f5)" aria-hidden="true">🧠</div>
-      <div class="article-content"><div class="article-cat">Brain Health</div><h3>Best Nootropics 2026</h3><p>Focus, memory, and mental clarity supplements reviewed.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-greens-powders.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e0f5e0,#a8dca8)" aria-hidden="true">🥬</div>
-      <div class="article-content"><div class="article-cat">Superfoods</div><h3>Best Greens Powders 2026</h3><p>Daily nutrition packed into one convenient scoop.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-sleep-supplements.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8eeff,#c0c8f8)" aria-hidden="true">😴</div>
-      <div class="article-content"><div class="article-cat">Sleep</div><h3>Best Sleep Supplements 2026</h3><p>Fall asleep faster and wake up refreshed.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-bcaa.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#fff0e8,#fdd0b0)" aria-hidden="true">💥</div>
-      <div class="article-content"><div class="article-cat">Recovery</div><h3>Best BCAA Supplements 2026</h3><p>Muscle recovery and endurance for serious athletes.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-turmeric-supplements.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#fff8e0,#fce8a0)" aria-hidden="true">🌱</div>
-      <div class="article-content"><div class="article-cat">Anti-Inflammatory</div><h3>Best Turmeric Supplements 2026</h3><p>Natural anti-inflammatory with powerful curcumin content.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-multivitamins-for-women.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#ffe8f8,#f0b8e0)" aria-hidden="true">👩</div>
-      <div class="article-content"><div class="article-cat">Women's Health</div><h3>Best Multivitamins for Women 2026</h3><p>Tailored nutrition for women's unique health needs.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-  </div>
-  <div style="text-align:center;margin-top:32px">
-    <details>
-      <summary style="display:inline-flex;align-items:center;gap:8px;background:var(--green-light);color:var(--green);padding:12px 24px;border-radius:30px;font-weight:700;cursor:pointer;font-size:14px;list-style:none">
-        Show all 40 supplement guides ▼
-      </summary>
-      <div class="articles-grid" style="margin-top:20px;text-align:left">
-        <a href="best-multivitamins-for-men.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8f0ff,#c0d0f5)" aria-hidden="true">👨</div><div class="article-content"><div class="article-cat">Men's Health</div><h3>Best Multivitamins for Men 2026</h3><p>Complete daily nutrition for men of all ages.</p><span class="article-link">Read →</span></div></a>
-        <a href="best-protein-bars.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#fdf0e0,#f8d8a0)" aria-hidden="true">🍫</div><div class="article-content"><div class="article-cat">Protein</div><h3>Best Protein Bars 2026</h3><p>On-the-go protein without the junk ingredients.</p><span class="article-link">Read →</span></div></a>
-        <a href="best-vegan-protein-powder.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e0f8e0,#a8e0a8)" aria-hidden="true">🌱</div><div class="article-content"><div class="article-cat">Vegan</div><h3>Best Vegan Protein Powder 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-whey-isolate.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#f0f8ff,#c0d8f0)" aria-hidden="true">🥛</div><div class="article-content"><div class="article-cat">Protein</div><h3>Best Whey Isolate 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-mass-gainer.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#fff0e8,#f8c8a0)" aria-hidden="true">⬆️</div><div class="article-content"><div class="article-cat">Muscle Gain</div><h3>Best Mass Gainers 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-glutamine-supplements.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8fff8,#b0f0d8)" aria-hidden="true">🔄</div><div class="article-content"><div class="article-cat">Recovery</div><h3>Best Glutamine Supplements 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-electrolyte-supplements.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8f8ff,#b0d8f0)" aria-hidden="true">⚡</div><div class="article-content"><div class="article-cat">Hydration</div><h3>Best Electrolyte Supplements 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-keto-supplements.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#fff8e0,#f8e0a0)" aria-hidden="true">🥑</div><div class="article-content"><div class="article-cat">Keto</div><h3>Best Keto Supplements 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-fat-burners-for-men.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#ffe8e8,#f8b0b0)" aria-hidden="true">🔥</div><div class="article-content"><div class="article-cat">Weight Loss</div><h3>Best Fat Burners for Men 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-adaptogens.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8f5ee,#c0dcc8)" aria-hidden="true">🍄</div><div class="article-content"><div class="article-cat">Adaptogens</div><h3>Best Adaptogens 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-vitamin-c-supplements.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#fff8e0,#fde0a0)" aria-hidden="true">🍊</div><div class="article-content"><div class="article-cat">Vitamins</div><h3>Best Vitamin C Supplements 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-iron-supplements.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#ffe8e8,#f8c8c8)" aria-hidden="true">🩸</div><div class="article-content"><div class="article-cat">Minerals</div><h3>Best Iron Supplements 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-zinc-supplements.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8f0e8,#c0d0c0)" aria-hidden="true">🦴</div><div class="article-content"><div class="article-cat">Minerals</div><h3>Best Zinc Supplements 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-b12-supplements.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#f8e8ff,#e0b8f8)" aria-hidden="true">⚡</div><div class="article-content"><div class="article-cat">Vitamins</div><h3>Best B12 Supplements 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-hair-supplements.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#ffe8f5,#f0b8d8)" aria-hidden="true">💇</div><div class="article-content"><div class="article-cat">Beauty</div><h3>Best Hair Supplements 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-eye-supplements.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8f0ff,#c0d0f8)" aria-hidden="true">👁️</div><div class="article-content"><div class="article-cat">Vision</div><h3>Best Eye Supplements 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-liver-supplements.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8ffe8,#b0e8b0)" aria-hidden="true">🫀</div><div class="article-content"><div class="article-cat">Detox</div><h3>Best Liver Supplements 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-anti-aging-supplements.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#fff0f8,#f8c0e0)" aria-hidden="true">⏳</div><div class="article-content"><div class="article-cat">Anti-Aging</div><h3>Best Anti-Aging Supplements 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-joint-supplements.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#f0fff0,#c0f0c0)" aria-hidden="true">🦵</div><div class="article-content"><div class="article-cat">Joints</div><h3>Best Joint Supplements 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-digestive-enzymes.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#fff8e8,#f8e0b0)" aria-hidden="true">🫃</div><div class="article-content"><div class="article-cat">Digestion</div><h3>Best Digestive Enzymes 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-melatonin-supplements.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8e0ff,#c8b8f8)" aria-hidden="true">🌙</div><div class="article-content"><div class="article-cat">Sleep</div><h3>Best Melatonin Supplements 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-caffeine-l-theanine.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#fff8e8,#f8e8b0)" aria-hidden="true">☕</div><div class="article-content"><div class="article-cat">Focus</div><h3>Best Caffeine + L-Theanine 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-l-carnitine-supplements.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8f8e8,#b8e8b8)" aria-hidden="true">🏃</div><div class="article-content"><div class="article-cat">Fat Burning</div><h3>Best L-Carnitine Supplements 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-collagen-powder.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#ffe8f0,#f8c0d0)" aria-hidden="true">✨</div><div class="article-content"><div class="article-cat">Beauty</div><h3>Best Collagen Powder 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-intermittent-fasting-supplements.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#f8f0e8,#f0d8c0)" aria-hidden="true">⏰</div><div class="article-content"><div class="article-cat">Fasting</div><h3>Best IF Supplements 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-protein-shakes.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8f5ff,#b8d8f8)" aria-hidden="true">🥤</div><div class="article-content"><div class="article-cat">Protein</div><h3>Best Protein Shakes 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-protein-powder-for-women.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#ffe8f5,#f8c0e0)" aria-hidden="true">👩‍🦰</div><div class="article-content"><div class="article-cat">Women's</div><h3>Best Protein Powder for Women 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-pre-workout-for-women.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#f0e8ff,#d8b8f5)" aria-hidden="true">⚡</div><div class="article-content"><div class="article-cat">Women's</div><h3>Best Pre-Workout for Women 2026</h3><span class="article-link">Read →</span></div></a>
-      </div>
-    </details>
+
+    <!-- HIDDEN: Show all supplements -->
+    <div id="more-supps" class="art-grid hidden-arts" style="margin-top:20px">
+      <a href="best-multivitamins-for-men.html" class="art-card"><img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500&q=70" alt="Men's supplements" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Men's Health</div><h3>Best Multivitamins for Men 2026</h3><span class="art-link">Read →</span></div></a>
+      <a href="best-protein-bars.html" class="art-card"><img src="https://images.unsplash.com/photo-1622484211163-5d8e6e9b2e1e?w=500&q=70" alt="Protein bars" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Protein</div><h3>Best Protein Bars 2026</h3><span class="art-link">Read →</span></div></a>
+      <a href="best-vegan-protein-powder.html" class="art-card"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500&q=70" alt="Vegan protein" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Vegan</div><h3>Best Vegan Protein Powder 2026</h3><span class="art-link">Read →</span></div></a>
+      <a href="best-whey-isolate.html" class="art-card"><img src="https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=500&q=70" alt="Whey protein isolate" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Protein</div><h3>Best Whey Isolate 2026</h3><span class="art-link">Read →</span></div></a>
+      <a href="best-keto-supplements.html" class="art-card"><img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=500&q=70" alt="Keto supplements" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Keto</div><h3>Best Keto Supplements 2026</h3><span class="art-link">Read →</span></div></a>
+      <a href="best-fat-burners-for-men.html" class="art-card"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&q=70" alt="Fat burners" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Weight Loss</div><h3>Best Fat Burners for Men 2026</h3><span class="art-link">Read →</span></div></a>
+      <a href="best-adaptogens.html" class="art-card"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=70" alt="Adaptogen herbs" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Adaptogens</div><h3>Best Adaptogens 2026</h3><span class="art-link">Read →</span></div></a>
+      <a href="best-vitamin-c-supplements.html" class="art-card"><img src="https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=500&q=70" alt="Vitamin C supplements" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Vitamins</div><h3>Best Vitamin C Supplements 2026</h3><span class="art-link">Read →</span></div></a>
+      <a href="best-iron-supplements.html" class="art-card"><img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=500&q=70" alt="Iron supplements" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Minerals</div><h3>Best Iron Supplements 2026</h3><span class="art-link">Read →</span></div></a>
+      <a href="best-zinc-supplements.html" class="art-card"><img src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=500&q=70" alt="Zinc supplements" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Minerals</div><h3>Best Zinc Supplements 2026</h3><span class="art-link">Read →</span></div></a>
+      <a href="best-b12-supplements.html" class="art-card"><img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&q=70" alt="B12 supplements" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Vitamins</div><h3>Best B12 Supplements 2026</h3><span class="art-link">Read →</span></div></a>
+      <a href="best-hair-supplements.html" class="art-card"><img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500&q=70" alt="Hair supplements" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Beauty</div><h3>Best Hair Supplements 2026</h3><span class="art-link">Read →</span></div></a>
+    </div>
+    <button class="show-more-btn" onclick="showMore('more-supps',this)" aria-expanded="false">Show all supplement guides ▼</button>
   </div>
 </section>
 
 <!-- FITNESS GEAR -->
-<section class="articles-section" id="fitness" aria-labelledby="fitness-heading" style="background:var(--white);padding-top:52px;padding-bottom:52px;margin:0">
-  <div style="max-width:1200px;margin:0 auto;padding:0 24px">
-  <div class="articles-header">
-    <div>
-      <div class="section-label">Fitness Equipment</div>
-      <h2 class="section-title" id="fitness-heading">Top Fitness Gear Reviews</h2>
+<section class="sec sec-alt" id="fitness" aria-labelledby="fit-h">
+  <div class="wrap">
+    <div class="sec-label">Fitness Equipment</div>
+    <h2 class="sec-title" id="fit-h">Top Fitness Gear Reviews</h2>
+    <div class="art-grid">
+
+      <a href="best-dumbbells.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&q=70" alt="Dumbbells" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Weights</div><h3>Best Dumbbells 2026</h3><p>Fixed and adjustable dumbbells for every home gym setup.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-resistance-bands.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=500&q=70" alt="Resistance bands workout" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Bands</div><h3>Best Resistance Bands 2026</h3><p>Versatile, portable strength training for all levels.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-pull-up-bar.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500&q=70" alt="Pull-up bar workout" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Bodyweight</div><h3>Best Pull-Up Bars 2026</h3><p>Build a stronger back and arms at home.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-kettlebells.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&q=70" alt="Kettlebell workout" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Weights</div><h3>Best Kettlebells 2026</h3><p>Full-body strength and conditioning in one tool.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-treadmills-for-home.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=70" alt="Home treadmill" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Cardio</div><h3>Best Home Treadmills 2026</h3><p>Top-rated treadmills for every budget and space.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-foam-roller.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=500&q=70" alt="Foam roller recovery" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Recovery</div><h3>Best Foam Rollers 2026</h3><p>Recover faster and reduce soreness.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-yoga-mats.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=500&q=70" alt="Yoga mat workout" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Yoga</div><h3>Best Yoga Mats 2026</h3><p>Grip, cushion, durability for every level.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-massage-guns.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500&q=70" alt="Massage gun recovery" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Recovery</div><h3>Best Massage Guns 2026</h3><p>Percussive therapy for faster muscle recovery.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-squat-rack.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=500&q=70" alt="Squat rack home gym" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Strength</div><h3>Best Squat Racks 2026</h3><p>From budget cages to full power racks.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-stationary-bikes.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1507398941214-572c25f4b1dc?w=500&q=70" alt="Stationary bike cardio" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Cardio</div><h3>Best Stationary Bikes 2026</h3><p>Low-impact cardio for home gyms.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-running-shoes.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=70" alt="Running shoes" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Footwear</div><h3>Best Running Shoes 2026</h3><p>Performance shoes for every type of runner.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
+      <a href="best-rowing-machines.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1616279969862-cf7e60a95f78?w=500&q=70" alt="Rowing machine workout" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Cardio</div><h3>Best Rowing Machines 2026</h3><p>Full-body cardio that's easy on the joints.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+
     </div>
-  </div>
-  <div class="articles-grid">
-    <a href="best-dumbbells.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8f0ff,#c0d0f5)" aria-hidden="true">🏋️</div>
-      <div class="article-content"><div class="article-cat">Weights</div><h3>Best Dumbbells 2026</h3><p>Fixed and adjustable dumbbells for every home gym setup.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-resistance-bands.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#ffe8e8,#f8c0c0)" aria-hidden="true">🔴</div>
-      <div class="article-content"><div class="article-cat">Bands</div><h3>Best Resistance Bands 2026</h3><p>Versatile, portable strength training for all levels.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-pull-up-bar.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8f5e8,#b8e0b8)" aria-hidden="true">🤸</div>
-      <div class="article-content"><div class="article-cat">Bodyweight</div><h3>Best Pull-Up Bars 2026</h3><p>Build a stronger back and arms at home.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-kettlebells.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#f0f0f0,#d0d0d0)" aria-hidden="true">🏋</div>
-      <div class="article-content"><div class="article-cat">Weights</div><h3>Best Kettlebells 2026</h3><p>Full-body strength and conditioning in one tool.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-treadmills-for-home.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8f8ff,#b0d8f5)" aria-hidden="true">🏃</div>
-      <div class="article-content"><div class="article-cat">Cardio</div><h3>Best Home Treadmills 2026</h3><p>Top-rated treadmills for every budget and space.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-rowing-machines.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e0f0f8,#b0cce0)" aria-hidden="true">🚣</div>
-      <div class="article-content"><div class="article-cat">Cardio</div><h3>Best Rowing Machines 2026</h3><p>Full-body cardio that's easy on the joints.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-foam-roller.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#ffe8f0,#f5c0d0)" aria-hidden="true">🧻</div>
-      <div class="article-content"><div class="article-cat">Recovery</div><h3>Best Foam Rollers 2026</h3><p>Recover faster and reduce soreness.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-massage-guns.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#f8f0e8,#e8d0b0)" aria-hidden="true">🔫</div>
-      <div class="article-content"><div class="article-cat">Recovery</div><h3>Best Massage Guns 2026</h3><p>Percussive therapy for faster muscle recovery.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-squat-rack.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8e8f8,#c0c0e8)" aria-hidden="true">🏗️</div>
-      <div class="article-content"><div class="article-cat">Strength</div><h3>Best Squat Racks 2026</h3><p>From budget cages to full power racks.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-stationary-bikes.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8fff0,#b0f0c8)" aria-hidden="true">🚴</div>
-      <div class="article-content"><div class="article-cat">Cardio</div><h3>Best Stationary Bikes 2026</h3><p>Low-impact cardio for home gyms.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-running-shoes.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#f0ffe8,#c8f0a8)" aria-hidden="true">👟</div>
-      <div class="article-content"><div class="article-cat">Footwear</div><h3>Best Running Shoes 2026</h3><p>Performance shoes for every type of runner.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-gym-bags.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8e0f8,#c0b0e8)" aria-hidden="true">🎒</div>
-      <div class="article-content"><div class="article-cat">Accessories</div><h3>Best Gym Bags 2026</h3><p>Durable, spacious bags for gym and travel.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-  </div>
-  <div style="text-align:center;margin-top:32px">
-    <details>
-      <summary style="display:inline-flex;align-items:center;gap:8px;background:var(--green-light);color:var(--green);padding:12px 24px;border-radius:30px;font-weight:700;cursor:pointer;font-size:14px;list-style:none">
-        Show all 35 fitness gear guides ▼
-      </summary>
-      <div class="articles-grid" style="margin-top:20px;text-align:left">
-        <a href="best-adjustable-dumbbells.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8f0ff,#c0d0f5)" aria-hidden="true">🏋️</div><div class="article-content"><div class="article-cat">Weights</div><h3>Best Adjustable Dumbbells</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-barbell.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#f0f0f0,#d8d8d8)" aria-hidden="true">🔩</div><div class="article-content"><div class="article-cat">Barbell</div><h3>Best Barbells 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-weight-plates.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#f0f0f0,#d0d0d0)" aria-hidden="true">⚫</div><div class="article-content"><div class="article-cat">Weights</div><h3>Best Weight Plates 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-bench-press.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8e8f5,#c8c8e8)" aria-hidden="true">🛋️</div><div class="article-content"><div class="article-cat">Strength</div><h3>Best Bench Press 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-jump-rope.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#ffe8e8,#f8c0c0)" aria-hidden="true">🪢</div><div class="article-content"><div class="article-cat">Cardio</div><h3>Best Jump Ropes 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-battle-ropes.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8ffe8,#b0e8b0)" aria-hidden="true">🌊</div><div class="article-content"><div class="article-cat">Cardio</div><h3>Best Battle Ropes 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-ab-rollers.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e0f8f8,#a8e0e0)" aria-hidden="true">🔄</div><div class="article-content"><div class="article-cat">Core</div><h3>Best Ab Rollers 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-pull-up-bar-door.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#f0f8e8,#c8e8a8)" aria-hidden="true">🚪</div><div class="article-content"><div class="article-cat">Bodyweight</div><h3>Best Door Pull-Up Bars</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-pull-up-assistance-bands.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#ffe0f0,#f0b0d0)" aria-hidden="true">🟡</div><div class="article-content"><div class="article-cat">Bands</div><h3>Best Pull-Up Bands 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-trx-suspension-trainer.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8f5ff,#b8d8f8)" aria-hidden="true">🔗</div><div class="article-content"><div class="article-cat">Functional</div><h3>Best TRX Trainers 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-agility-ladder.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#fffae8,#f8e8b0)" aria-hidden="true">🪜</div><div class="article-content"><div class="article-cat">Speed</div><h3>Best Agility Ladders 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-plyo-box.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8f0e8,#c0d8c0)" aria-hidden="true">📦</div><div class="article-content"><div class="article-cat">Plyometrics</div><h3>Best Plyo Boxes 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-medicine-ball.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#f8e8e8,#e8c0c0)" aria-hidden="true">⚾</div><div class="article-content"><div class="article-cat">Functional</div><h3>Best Medicine Balls 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-balance-board.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8f8ff,#b0d8f0)" aria-hidden="true">🏄</div><div class="article-content"><div class="article-cat">Balance</div><h3>Best Balance Boards 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-parallette-bars.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#f5f5f5,#e0e0e0)" aria-hidden="true">🤸</div><div class="article-content"><div class="article-cat">Calisthenics</div><h3>Best Parallette Bars 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-hand-grippers.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#f0ffe0,#c8f0a0)" aria-hidden="true">✊</div><div class="article-content"><div class="article-cat">Grip</div><h3>Best Hand Grippers 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-weight-lifting-belts.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#f0e8e0,#d8c0a8)" aria-hidden="true">🥋</div><div class="article-content"><div class="article-cat">Support</div><h3>Best Lifting Belts 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-gym-gloves.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e0f0e0,#b0d8b0)" aria-hidden="true">🧤</div><div class="article-content"><div class="article-cat">Accessories</div><h3>Best Gym Gloves 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-chalk-for-lifting.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#f8f8f8,#e8e8e8)" aria-hidden="true">🪨</div><div class="article-content"><div class="article-cat">Accessories</div><h3>Best Chalk for Lifting</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-speed-bag.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#ffe8e8,#f8c8c8)" aria-hidden="true">🥊</div><div class="article-content"><div class="article-cat">Boxing</div><h3>Best Speed Bags 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-yoga-blocks.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#ffe8f0,#f0c0d0)" aria-hidden="true">🧘</div><div class="article-content"><div class="article-cat">Yoga</div><h3>Best Yoga Blocks 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-treadmill-mat.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8f5e8,#c0e0c0)" aria-hidden="true">🟩</div><div class="article-content"><div class="article-cat">Accessories</div><h3>Best Treadmill Mats 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-gym-flooring.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8e8e8,#d0d0d0)" aria-hidden="true">🏟️</div><div class="article-content"><div class="article-cat">Home Gym</div><h3>Best Gym Flooring 2026</h3><span class="article-link">Read →</span></div></a>
-        <a href="best-gym-mirror.html" class="article-card"><div class="article-img" style="background:linear-gradient(135deg,#e8f0ff,#c0c8f8)" aria-hidden="true">🪞</div><div class="article-content"><div class="article-cat">Home Gym</div><h3>Best Gym Mirrors 2026</h3><span class="article-link">Read →</span></div></a>
-      </div>
-    </details>
-  </div>
+
+    <div id="more-fitness" class="art-grid hidden-arts" style="margin-top:20px">
+      <a href="best-adjustable-dumbbells.html" class="art-card"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&q=70" alt="Adjustable dumbbells" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Weights</div><h3>Best Adjustable Dumbbells 2026</h3><span class="art-link">Read →</span></div></a>
+      <a href="best-barbell.html" class="art-card"><img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=500&q=70" alt="Barbell" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Strength</div><h3>Best Barbells 2026</h3><span class="art-link">Read →</span></div></a>
+      <a href="best-jump-rope.html" class="art-card"><img src="https://images.unsplash.com/photo-1601422407692-ad5090f3d43c?w=500&q=70" alt="Jump rope cardio" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Cardio</div><h3>Best Jump Ropes 2026</h3><span class="art-link">Read →</span></div></a>
+      <a href="best-gym-bags.html" class="art-card"><img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=70" alt="Gym bag" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Accessories</div><h3>Best Gym Bags 2026</h3><span class="art-link">Read →</span></div></a>
+      <a href="best-weight-lifting-belts.html" class="art-card"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&q=70" alt="Weight lifting belt" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Support</div><h3>Best Lifting Belts 2026</h3><span class="art-link">Read →</span></div></a>
+      <a href="best-home-gym.html" class="art-card"><img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=500&q=70" alt="Home gym setup" class="art-img" loading="lazy"><div class="art-body"><div class="art-cat">Home Gym</div><h3>Best Home Gym Equipment 2026</h3><span class="art-link">Read →</span></div></a>
+    </div>
+    <button class="show-more-btn" onclick="showMore('more-fitness',this)" aria-expanded="false">Show all fitness gear guides ▼</button>
   </div>
 </section>
 
 <!-- HEALTH DEVICES -->
-<section class="articles-section" id="health-devices" aria-labelledby="devices-heading">
-  <div class="articles-header">
-    <div>
-      <div class="section-label">Health Devices</div>
-      <h2 class="section-title" id="devices-heading">Best Health & Monitoring Devices</h2>
+<section class="sec" id="health-devices" aria-labelledby="dev-h">
+  <div class="wrap">
+    <div class="sec-label">Health Devices</div>
+    <h2 class="sec-title" id="dev-h">Best Health & Monitoring Devices</h2>
+    <div class="art-grid">
+      <a href="best-fitness-trackers.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=500&q=70" alt="Fitness tracker smartwatch" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Wearables</div><h3>Best Fitness Trackers 2026</h3><p>Track steps, heart rate, sleep, and more.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+      <a href="best-smart-scale.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=500&q=70" alt="Smart scale body composition" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Body Composition</div><h3>Best Smart Scales 2026</h3><p>Weight, BMI, body fat — all in one device.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+      <a href="best-blood-pressure-monitors.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=500&q=70" alt="Blood pressure monitor" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Heart Health</div><h3>Best Blood Pressure Monitors 2026</h3><p>Accurate home monitoring for heart health.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+      <a href="best-glucose-monitors.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=500&q=70" alt="Glucose monitor diabetes" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Diabetes</div><h3>Best Glucose Monitors 2026</h3><p>Track blood sugar with accuracy and ease.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+      <a href="best-sleep-trackers.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1455642305367-68834a9a7729?w=500&q=70" alt="Sleep tracker device" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Sleep</div><h3>Best Sleep Trackers 2026</h3><p>Understand your sleep cycles and improve rest.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+      <a href="best-massage-guns.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500&q=70" alt="Massage gun therapy" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Recovery</div><h3>Best Massage Guns 2026</h3><p>Percussive therapy for muscle recovery.</p><span class="art-link">Read Guide →</span></div>
+      </a>
     </div>
-  </div>
-  <div class="articles-grid">
-    <a href="best-fitness-trackers.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8f0ff,#b8c8f8)" aria-hidden="true">⌚</div>
-      <div class="article-content"><div class="article-cat">Wearables</div><h3>Best Fitness Trackers 2026</h3><p>Track steps, heart rate, sleep, and more.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-smart-scale.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8f5e8,#b8e0b8)" aria-hidden="true">⚖️</div>
-      <div class="article-content"><div class="article-cat">Body Composition</div><h3>Best Smart Scales 2026</h3><p>Weight, BMI, body fat — all in one device.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-blood-pressure-monitors.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#ffe8e8,#f8b8b8)" aria-hidden="true">💓</div>
-      <div class="article-content"><div class="article-cat">Heart Health</div><h3>Best Blood Pressure Monitors 2026</h3><p>Accurate home monitoring for heart health.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-glucose-monitors.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#fffae8,#f8e8b0)" aria-hidden="true">🩸</div>
-      <div class="article-content"><div class="article-cat">Diabetes</div><h3>Best Glucose Monitors 2026</h3><p>Track blood sugar with accuracy and ease.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-sleep-trackers.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8e0ff,#c0b0f5)" aria-hidden="true">😴</div>
-      <div class="article-content"><div class="article-cat">Sleep</div><h3>Best Sleep Trackers 2026</h3><p>Understand your sleep cycles and improve rest.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-pulse-oximeters.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#ffe8f0,#f8b8c8)" aria-hidden="true">🫁</div>
-      <div class="article-content"><div class="article-cat">Respiratory</div><h3>Best Pulse Oximeters 2026</h3><p>Monitor blood oxygen levels at home.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-posture-correctors.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8f8ff,#b0d8f5)" aria-hidden="true">🦴</div>
-      <div class="article-content"><div class="article-cat">Posture</div><h3>Best Posture Correctors 2026</h3><p>Fix your posture and reduce back pain.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-blenders-for-protein-shakes.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8fff8,#a8f0d0)" aria-hidden="true">🥤</div>
-      <div class="article-content"><div class="article-cat">Kitchen</div><h3>Best Blenders for Protein Shakes</h3><p>Smooth shakes without the chunks.</p><span class="article-link">Read Guide →</span></div>
-    </a>
   </div>
 </section>
 
-<!-- WELLNESS SECTION -->
-<section class="articles-section" id="wellness" aria-labelledby="wellness-heading" style="background:var(--white);padding:52px 0">
-  <div style="max-width:1200px;margin:0 auto;padding:0 24px">
-  <div class="articles-header">
-    <div>
-      <div class="section-label">Wellness & Lifestyle</div>
-      <h2 class="section-title" id="wellness-heading">Wellness Essentials</h2>
+<!-- WELLNESS -->
+<section class="sec sec-alt" id="wellness" aria-labelledby="well-h">
+  <div class="wrap">
+    <div class="sec-label">Wellness & Lifestyle</div>
+    <h2 class="sec-title" id="well-h">Wellness Essentials</h2>
+    <div class="art-grid">
+      <a href="best-ergonomic-chairs.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&q=70" alt="Ergonomic office chair" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Work From Home</div><h3>Best Ergonomic Chairs 2026</h3><p>Protect your back during long work sessions.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+      <a href="best-standing-desks.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=500&q=70" alt="Standing desk home office" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Work From Home</div><h3>Best Standing Desks 2026</h3><p>Reduce sedentary time and boost productivity.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+      <a href="best-sports-water-bottles.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=500&q=70" alt="Sports water bottle" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Hydration</div><h3>Best Sports Water Bottles 2026</h3><p>Stay hydrated with style and function.</p><span class="art-link">Read Guide →</span></div>
+      </a>
+      <a href="best-fitness-apps-2026.html" class="art-card">
+        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=500&q=70" alt="Fitness apps on phone" class="art-img" loading="lazy">
+        <div class="art-body"><div class="art-cat">Tech</div><h3>Best Fitness Apps 2026</h3><p>Track workouts, nutrition, and progress.</p><span class="art-link">Read Guide →</span></div>
+      </a>
     </div>
-  </div>
-  <div class="articles-grid">
-    <a href="best-ergonomic-chairs.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8f0ff,#c0c8f8)" aria-hidden="true">🪑</div>
-      <div class="article-content"><div class="article-cat">Work From Home</div><h3>Best Ergonomic Chairs 2026</h3><p>Protect your back during long work sessions.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-standing-desks.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8f5e8,#b8e0b8)" aria-hidden="true">🖥️</div>
-      <div class="article-content"><div class="article-cat">Work From Home</div><h3>Best Standing Desks 2026</h3><p>Reduce sedentary time and boost productivity.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-sports-water-bottles.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#e8f8ff,#b0d8f5)" aria-hidden="true">💧</div>
-      <div class="article-content"><div class="article-cat">Hydration</div><h3>Best Sports Water Bottles 2026</h3><p>Stay hydrated with style and functionality.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-    <a href="best-fitness-apps-2026.html" class="article-card">
-      <div class="article-img" style="background:linear-gradient(135deg,#ffe8f8,#f8c0e0)" aria-hidden="true">📱</div>
-      <div class="article-content"><div class="article-cat">Tech</div><h3>Best Fitness Apps 2026</h3><p>Track workouts, nutrition, and progress.</p><span class="article-link">Read Guide →</span></div>
-    </a>
-  </div>
   </div>
 </section>
 
-<!-- TRUST SECTION -->
-<section class="trust-section" aria-label="Why trust VitalPicks">
+<!-- TRUST -->
+<section class="trust-sec" aria-label="Why trust VitalPicks">
   <div class="trust-inner">
     <h2>Why Readers Trust VitalPicks</h2>
     <p>We spend hundreds of hours researching so you can make confident, informed decisions</p>
     <div class="trust-grid">
       <div class="trust-item">
-        <div class="trust-icon" aria-hidden="true">🔬</div>
+        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=120&q=80" alt="Science research" class="trust-img">
         <h3>Science-Backed</h3>
         <p>Every recommendation is grounded in clinical research and expert consensus</p>
       </div>
       <div class="trust-item">
-        <div class="trust-icon" aria-hidden="true">🚫</div>
+        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=120&q=80" alt="Independent reviews" class="trust-img">
         <h3>No Paid Reviews</h3>
         <p>We never accept payment to change our ratings or recommendations</p>
       </div>
       <div class="trust-item">
-        <div class="trust-icon" aria-hidden="true">🔄</div>
+        <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=120&q=80" alt="Regular updates" class="trust-img">
         <h3>Regularly Updated</h3>
         <p>Our guides are reviewed and updated monthly to reflect the latest products</p>
       </div>
       <div class="trust-item">
-        <div class="trust-icon" aria-hidden="true">✅</div>
+        <img src="https://images.unsplash.com/photo-1551076805-e1869033e561?w=120&q=80" alt="Expert reviewed" class="trust-img">
         <h3>Expert Reviewed</h3>
         <p>Content is reviewed for accuracy by fitness and nutrition professionals</p>
       </div>
@@ -670,14 +593,13 @@ footer{background:#0f1f14;color:#8a9e90;padding:52px 24px 32px}
 </section>
 
 <!-- NEWSLETTER -->
-<section class="newsletter" aria-label="Newsletter signup">
-  <div class="newsletter-inner">
-    <div style="font-size:36px;margin-bottom:12px" aria-hidden="true">📬</div>
+<section class="nl-sec" aria-label="Newsletter">
+  <div class="nl-inner">
+    <img src="https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=80&q=80" alt="" aria-hidden="true" style="width:64px;height:64px;border-radius:50%;object-fit:cover;margin:0 auto 16px">
     <h2>Get Weekly Health Picks</h2>
-    <p>New reviews, deals, and health tips — delivered every Monday. No spam, ever.</p>
-    <form class="nl-form" onsubmit="nlSubmit(event)" aria-label="Newsletter signup form">
-      <label for="nl-email" style="position:absolute;left:-9999px">Your email address</label>
-      <input type="email" id="nl-email" placeholder="your@email.com" required aria-required="true">
+    <p>New reviews, deals, and health tips every Monday. No spam, ever.</p>
+    <form class="nl-form" onsubmit="nlSubmit(event)">
+      <input type="email" placeholder="your@email.com" required aria-label="Email address">
       <button type="submit">Subscribe Free</button>
     </form>
     <p style="font-size:12px;color:#aaa;margin-top:12px">Join 5,000+ readers. Unsubscribe anytime.</p>
@@ -688,13 +610,13 @@ footer{background:#0f1f14;color:#8a9e90;padding:52px 24px 32px}
 
 <!-- FOOTER -->
 <footer role="contentinfo">
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <div class="logo">💚 VitalPicks</div>
-        <p>Honest, science-backed reviews of health supplements and fitness equipment. We help you make smarter choices for your health — without the BS.</p>
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <div class="flogo">💚 VitalPicks</div>
+        <p>Honest, science-backed reviews of health supplements and fitness equipment. We help you make smarter choices for your health.</p>
       </div>
-      <div class="footer-col">
+      <div class="foot-col">
         <h4>Supplements</h4>
         <a href="best-protein-powders.html">Protein Powders</a>
         <a href="best-creatine.html">Creatine</a>
@@ -703,7 +625,7 @@ footer{background:#0f1f14;color:#8a9e90;padding:52px 24px 32px}
         <a href="best-omega-3.html">Omega-3</a>
         <a href="best-probiotics.html">Probiotics</a>
       </div>
-      <div class="footer-col">
+      <div class="foot-col">
         <h4>Fitness Gear</h4>
         <a href="best-dumbbells.html">Dumbbells</a>
         <a href="best-resistance-bands.html">Resistance Bands</a>
@@ -712,7 +634,7 @@ footer{background:#0f1f14;color:#8a9e90;padding:52px 24px 32px}
         <a href="best-treadmills-for-home.html">Treadmills</a>
         <a href="best-home-gym.html">Home Gym</a>
       </div>
-      <div class="footer-col">
+      <div class="foot-col">
         <h4>Company</h4>
         <a href="about.html">About Us</a>
         <a href="contact.html">Contact</a>
@@ -720,93 +642,25 @@ footer{background:#0f1f14;color:#8a9e90;padding:52px 24px 32px}
         <a href="affiliate-disclosure.html">Affiliate Disclosure</a>
       </div>
     </div>
-    <div class="footer-bottom">
+    <div class="foot-bot">
       <p>© 2026 VitalPicks.org — All rights reserved</p>
-      <div class="footer-legal">
+      <div class="foot-legal">
         <a href="privacy.html">Privacy</a>
         <a href="affiliate-disclosure.html">Affiliates</a>
         <a href="contact.html">Contact</a>
-        <a href="about.html">About</a>
       </div>
     </div>
   </div>
 </footer>
 
 <script>
-// Mobile menu
-function toggleMenu(btn) {
-  const nav = document.getElementById('mobile-nav');
-  const open = nav.classList.toggle('open');
-  btn.setAttribute('aria-expanded', open);
-  btn.textContent = open ? '✕' : '☰';
-}
-// Close mobile menu on link click
-document.querySelectorAll('.mobile-nav a').forEach(a => {
-  a.addEventListener('click', () => {
-    document.getElementById('mobile-nav').classList.remove('open');
-    document.querySelector('.menu-toggle').textContent = '☰';
-  });
-});
-// Search
-function doSearch(e) {
-  e.preventDefault();
-  const q = document.getElementById('site-search').value.trim().toLowerCase();
-  if (!q) return;
-  searchFor(q);
-}
-function searchFor(q) {
-  const pages = {
-    'protein powder': 'best-protein-powders.html',
-    'creatine': 'best-creatine.html',
-    'pre workout': 'best-pre-workout.html',
-    'pre-workout': 'best-pre-workout.html',
-    'yoga mat': 'best-yoga-mats.html',
-    'multivitamin': 'best-multivitamins.html',
-    'resistance bands': 'best-resistance-bands.html',
-    'omega-3': 'best-omega-3.html',
-    'omega 3': 'best-omega-3.html',
-    'vitamin d': 'best-vitamin-d-supplements.html',
-    'magnesium': 'best-magnesium-supplements.html',
-    'ashwagandha': 'best-ashwagandha.html',
-    'collagen': 'best-collagen-supplements.html',
-    'probiotics': 'best-probiotics.html',
-    'dumbbells': 'best-dumbbells.html',
-    'kettlebells': 'best-kettlebells.html',
-    'treadmill': 'best-treadmills-for-home.html',
-    'sleep': 'best-sleep-supplements.html',
-    'weight loss': 'best-weight-loss-supplements.html',
-    'fat burner': 'best-fat-burners-for-men.html',
-    'bcaa': 'best-bcaa.html',
-    'nootropic': 'best-nootropics.html',
-    'greens': 'best-greens-powders.html',
-    'fitness tracker': 'best-fitness-trackers.html',
-    'home gym': 'best-home-gym.html',
-  };
-  for (const [key, url] of Object.entries(pages)) {
-    if (q.includes(key) || key.includes(q)) {
-      window.location.href = url;
-      return;
-    }
-  }
-  // fallback — scroll to supplements
-  document.getElementById('supplements').scrollIntoView({behavior:'smooth'});
-}
-// Newsletter
-function nlSubmit(e) {
-  e.preventDefault();
-  const btn = e.target.querySelector('button');
-  btn.textContent = '✅ Subscribed!';
-  btn.style.background = '#155530';
-  e.target.querySelector('input').value = '';
-  setTimeout(() => { btn.textContent = 'Subscribe Free'; btn.style.background = ''; }, 3000);
-}
-// Smooth scroll for hash links
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) { e.preventDefault(); target.scrollIntoView({behavior:'smooth', block:'start'}); }
-  });
-});
+function toggleMenu(b){const n=document.getElementById('mobn');const o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);b.textContent=o?'✕':'☰';}
+document.querySelectorAll('.mob a').forEach(a=>{a.addEventListener('click',()=>{document.getElementById('mobn').classList.remove('open');document.querySelector('.mt').textContent='☰';});});
+function showMore(id,btn){const el=document.getElementById(id);el.classList.toggle('visible');const open=el.classList.contains('visible');btn.setAttribute('aria-expanded',open);btn.textContent=open?'Show less ▲':'Show all guides ▼';}
+function doSearch(e){e.preventDefault();searchFor(document.getElementById('site-search').value.trim().toLowerCase());}
+function searchFor(q){const m={'protein powder':'best-protein-powders.html','creatine':'best-creatine.html','pre workout':'best-pre-workout.html','pre-workout':'best-pre-workout.html','yoga mat':'best-yoga-mats.html','multivitamin':'best-multivitamins.html','omega-3':'best-omega-3.html','omega 3':'best-omega-3.html','vitamin d':'best-vitamin-d-supplements.html','magnesium':'best-magnesium-supplements.html','ashwagandha':'best-ashwagandha.html','collagen':'best-collagen-supplements.html','probiotics':'best-probiotics.html','dumbbells':'best-dumbbells.html','kettlebells':'best-kettlebells.html','treadmill':'best-treadmills-for-home.html','sleep':'best-sleep-supplements.html','weight loss':'best-weight-loss-supplements.html','fat burner':'best-fat-burners-for-men.html','bcaa':'best-bcaa.html','nootropic':'best-nootropics.html','greens':'best-greens-powders.html','fitness tracker':'best-fitness-trackers.html','home gym':'best-home-gym.html','resistance bands':'best-resistance-bands.html','running shoes':'best-running-shoes.html','massage gun':'best-massage-guns.html','foam roller':'best-foam-roller.html'};for(const[k,v]of Object.entries(m)){if(q.includes(k)||k.includes(q)){window.location.href=v;return;}}document.getElementById('supplements').scrollIntoView({behavior:'smooth'});}
+function nlSubmit(e){e.preventDefault();const b=e.target.querySelector('button');b.textContent='✅ Subscribed!';b.style.background='#155530';e.target.querySelector('input').value='';setTimeout(()=>{b.textContent='Subscribe Free';b.style.background='';},3000);}
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}});});
 </script>
 </body>
 </html>
