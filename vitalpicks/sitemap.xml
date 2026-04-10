@@ -111,4 +111,16 @@
   <url><loc>https://www.vitalpicks.org/</loc><lastmod>2026-04-10</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>
   <url><loc>https://www.vitalpicks.org/privacy-policy.html</loc><lastmod>2026-04-10</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.vitalpicks.org/privacy.html</loc><lastmod>2026-04-10</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url>
+    <loc>https://www.vitalpicks.org/best-bcaa-supplements.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.vitalpicks.org/best-vitamin-b-complex.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
