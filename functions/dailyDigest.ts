@@ -1,333 +1,262 @@
-import { createClientFromRequest } from "@base44/sdk";
+import { createClient } from "@base44/sdk";
 
-export default async function dailyDigest(req: Request) {
-  const base44 = createClientFromRequest(req);
+const base44 = createClient();
 
+interface AnalyticsData {
+  visitors: number;
+  sessions: number;
+  pageviews: number;
+  topPages: Array<{ page: string; views: number }>;
+  bounceRate: number;
+  avgSessionDuration: number;
+  countries: Array<{ country: string; users: number }>;
+}
+
+async function getGoogleAnalyticsData(): Promise<AnalyticsData> {
   try {
-    // Get Gmail token to send email
-    const gmailConn = await base44.asServiceRole.connectors.getConnection(
-      "gmail"
-    );
-    const gmailToken = gmailConn.accessToken;
-
-    // Get Google Analytics token
-    const gaConn = await base44.asServiceRole.connectors.getConnection(
+    const { accessToken } = await base44.asServiceRole.connectors.getConnection(
       "google_analytics"
     );
-    const gaToken = gaConn.accessToken;
 
-    // Calculate yesterday's date
+    // Get property ID from GA
+    const propertyId = "465363370"; // You'll need to update this with your actual GA4 property ID
+
+    // Yesterday's date range
     const today = new Date();
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
 
-    const dateStr = yesterday.toISOString().split("T")[0]; // YYYY-MM-DD
+    const dateStr = yesterday.toISOString().split("T")[0];
 
-    // Get GA4 Property ID from environment or default
-    // For now, we'll use a placeholder - user needs to provide their GA4 property ID
-    const propertyId = "464047752"; // This would be their actual GA4 property ID
-
-    // Fetch GA4 data using the Data API
-    const gaDataUrl = "https://analyticsdata.googleapis.com/v1beta/properties/" +
-      propertyId +
-      ":runReport";
-
-    const gaPayload = {
-      dateRanges: [
-        {
-          startDate: dateStr,
-          endDate: dateStr,
-        },
-      ],
-      metrics: [
-        { name: "activeUsers" },
-        { name: "sessions" },
-        { name: "screenPageViews" },
-      ],
-      dimensions: [{ name: "pagePath" }, { name: "country" }],
-      limit: 10,
-    };
-
-    let visitors = 0,
-      sessions = 0,
-      pageviews = 0,
-      topPages = [],
-      countries = {};
-
-    try {
-      const gaResponse = await fetch(gaDataUrl, {
+    // Fetch GA4 data
+    const gaResponse = await fetch(
+      `https://analyticsreporting.googleapis.com/v4/reports:batchGet`,
+      {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${gaToken}`,
+          Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(gaPayload),
-      });
-
-      if (gaResponse.ok) {
-        const gaData = await gaResponse.json();
-
-        // Extract metrics
-        if (gaData.totals && gaData.totals[0]) {
-          const total = gaData.totals[0];
-          visitors = parseInt(total.metricValues?.[0]?.value || "0");
-          sessions = parseInt(total.metricValues?.[1]?.value || "0");
-          pageviews = parseInt(total.metricValues?.[2]?.value || "0");
-        }
-
-        // Extract top pages and countries
-        if (gaData.rows) {
-          for (const row of gaData.rows) {
-            const pagePath = row.dimensionValues?.[0]?.value || "unknown";
-            const country = row.dimensionValues?.[1]?.value || "unknown";
-            const pageViews = parseInt(
-              row.metricValues?.[2]?.value || "0"
-            );
-
-            if (
-              pagePath &&
-              pagePath !== "/" &&
-              pagePath !== "(not set)"
-            ) {
-              topPages.push({
-                page: pagePath.substring(0, 50),
-                views: pageViews,
-              });
-            }
-
-            if (country && country !== "(not set)") {
-              countries[country] = (countries[country] || 0) + pageViews;
-            }
-          }
-        }
-
-        topPages = topPages
-          .sort((a, b) => b.views - a.views)
-          .slice(0, 5);
-        const topCountries = Object.entries(countries)
-          .map(([c, v]) => [c, v])
-          .sort((a, b) => (b[1] as number) - (a[1] as number))
-          .slice(0, 3);
-
-        // Estimate earnings (rough: $0.50 per click, assume 2% CTR)
-        const estimatedClicks = Math.round(pageviews * 0.02);
-        const estimatedEarnings = (estimatedClicks * 0.5).toFixed(2);
-
-        // Build email
-        const emailDate = yesterday
-          .toLocaleDateString("en-US", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          });
-
-        const emailBody = `
-<html>
-<head>
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f7faf8; }
-    .container { max-width: 600px; margin: 20px auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-    .header { background: linear-gradient(135deg, #134f2b, #1a6b3a); color: white; padding: 24px; text-align: center; }
-    .header h1 { margin: 0; font-size: 24px; font-weight: 900; }
-    .header p { margin: 6px 0 0; opacity: 0.85; }
-    .content { padding: 32px; }
-    .stat-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 32px; }
-    .stat { background: #f7faf8; border-radius: 10px; padding: 16px; text-align: center; border-left: 4px solid #1a6b3a; }
-    .stat-number { font-size: 32px; font-weight: 900; color: #1a6b3a; }
-    .stat-label { font-size: 12px; color: #5a6672; margin-top: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-    .section { margin-bottom: 28px; }
-    .section-title { font-size: 14px; font-weight: 800; color: #1a6b3a; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; border-bottom: 2px solid #e2ece5; padding-bottom: 8px; }
-    .list-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
-    .list-item:last-child { border-bottom: none; }
-    .list-label { color: #5a6672; }
-    .list-value { font-weight: 700; color: #1a6b3a; }
-    .footer { background: #f7faf8; padding: 20px; text-align: center; font-size: 12px; color: #5a6672; border-top: 1px solid #e2ece5; }
-    .cta { background: #1a6b3a; color: white; padding: 12px 24px; border-radius: 30px; text-decoration: none; display: inline-block; font-weight: 700; margin-top: 12px; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>💚 VitalPicks Daily Report</h1>
-      <p>${emailDate}</p>
-    </div>
-    <div class="content">
-      <div class="stat-row">
-        <div class="stat">
-          <div class="stat-number">${visitors}</div>
-          <div class="stat-label">Visitors</div>
-        </div>
-        <div class="stat">
-          <div class="stat-number">${sessions}</div>
-          <div class="stat-label">Sessions</div>
-        </div>
-        <div class="stat">
-          <div class="stat-number">${pageviews}</div>
-          <div class="stat-label">Pageviews</div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="stat" style="grid-column: span 3; text-align: left; border: none; background: #fffbeb; border-left-color: #f0a500;">
-          <div style="font-size: 24px; font-weight: 900; color: #f0a500;">$${estimatedEarnings}</div>
-          <div style="font-size: 12px; color: #78350f; margin-top: 4px;">Est. Earnings (${estimatedClicks} clicks × $0.50)</div>
-        </div>
-      </div>
-
-      ${topPages.length > 0
-        ? `
-      <div class="section">
-        <div class="section-title">📊 Top Pages</div>
-        ${topPages
-          .map(
-            (p) =>
-              `<div class="list-item"><span class="list-label">${p.page}</span><span class="list-value">${p.views}</span></div>`
-          )
-          .join("")}
-      </div>
-      `
-        : ""
-      }
-
-      ${topCountries.length > 0
-        ? `
-      <div class="section">
-        <div class="section-title">🌍 Top Countries</div>
-        ${topCountries
-          .map(
-            ([c, v]) =>
-              `<div class="list-item"><span class="list-label">${c}</span><span class="list-value">${v}</span></div>`
-          )
-          .join("")}
-      </div>
-      `
-        : ""
-      }
-
-      <div style="margin-top: 28px; padding: 16px; background: #f7faf8; border-radius: 10px;">
-        <p style="margin: 0; font-size: 13px; color: #5a6672; line-height: 1.6;">
-          <strong>Next steps:</strong> Check your <a href="https://analytics.google.com/" style="color: #1a6b3a; font-weight: 700;">Google Analytics dashboard</a> for detailed breakdowns. Monitor top-performing pages and optimize them for better rankings.
-        </p>
-      </div>
-    </div>
-    <div class="footer">
-      <p style="margin: 0;">VitalPicks — Automated daily reports | <a href="https://www.vitalpicks.org" style="color: #1a6b3a; text-decoration: none; font-weight: 700;">Visit site</a></p>
-    </div>
-  </div>
-</body>
-</html>
-`;
-
-        // Send email via Gmail
-        const emailMessage = {
-          raw: Buffer.from(
-            `From: noreply@vitalpicks.org\r\nTo: gulrajb@gmail.com\r\nSubject: VitalPicks Daily Report - ${emailDate}\r\nContent-Type: text/html; charset="UTF-8"\r\n\r\n${emailBody}`
-          )
-            .toString("base64")
-            .replace(/\+/g, "-")
-            .replace(/\//g, "_")
-            .replace(/=/g, ""),
-        };
-
-        const sendResponse = await fetch(
-          "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${gmailToken}`,
-              "Content-Type": "application/json",
+        body: JSON.stringify({
+          reportRequests: [
+            {
+              viewId: propertyId,
+              dateRanges: [
+                {
+                  startDate: dateStr,
+                  endDate: dateStr,
+                },
+              ],
+              metrics: [
+                { expression: "ga:users" },
+                { expression: "ga:sessions" },
+                { expression: "ga:pageviews" },
+                { expression: "ga:bounceRate" },
+                { expression: "ga:avgSessionDuration" },
+              ],
+              dimensions: [{ name: "ga:pagePath" }, { name: "ga:country" }],
+              orderBys: [
+                {
+                  fieldName: "ga:pageviews",
+                  sortOrder: "DESCENDING",
+                },
+              ],
+              pageSize: 25,
             },
-            body: JSON.stringify(emailMessage),
-          }
-        );
+          ],
+        }),
+      }
+    );
 
-        if (sendResponse.ok) {
-          return new Response(
-            JSON.stringify({
-              success: true,
-              message: `Daily digest sent to gulrajb@gmail.com`,
-              data: {
-                date: dateStr,
-                visitors,
-                sessions,
-                pageviews,
-                estimatedEarnings,
-              },
-            }),
-            { status: 200 }
-          );
-        } else {
-          const error = await sendResponse.text();
-          throw new Error(`Gmail send failed: ${error}`);
-        }
-      } else {
-        // GA API failed - send a fallback email
-        const fallbackBody = `
-<html>
-<body style="font-family: sans-serif; padding: 20px; background: #f7faf8;">
-  <div style="max-width: 600px; margin: 0 auto; background: white; padding: 24px; border-radius: 12px;">
-    <h2 style="color: #1a6b3a; margin-top: 0;">📊 VitalPicks Daily Report</h2>
-    <p style="color: #5a6672; line-height: 1.6;">
-      <strong>Note:</strong> Google Analytics data is still loading. It can take 24-48 hours for data to appear after connecting. 
-      <br><br>Check back tomorrow for your first report with real visitor data.
-      <br><br><a href="https://analytics.google.com/" style="color: #1a6b3a; font-weight: bold;">View in Google Analytics →</a>
+    const gaData = await gaResponse.json();
+
+    // Parse response
+    const report = gaData.reports[0];
+    const totals = report.data.totals[0];
+    const rows = report.data.rows || [];
+
+    const visitors = parseInt(totals.values[0]) || 0;
+    const sessions = parseInt(totals.values[1]) || 0;
+    const pageviews = parseInt(totals.values[2]) || 0;
+    const bounceRate = parseFloat(totals.values[3]).toFixed(1) || "0";
+    const avgSessionDuration = Math.round(
+      parseFloat(totals.values[4]) * 100
+    ) / 100;
+
+    // Top pages
+    const topPages = rows.slice(0, 5).map((row: any) => ({
+      page: row.dimensions[0],
+      views: parseInt(row.metrics[0].values[2]),
+    }));
+
+    // Countries
+    const countryMap: Record<string, number> = {};
+    rows.forEach((row: any) => {
+      const country = row.dimensions[1];
+      const views = parseInt(row.metrics[0].values[0]);
+      countryMap[country] = (countryMap[country] || 0) + views;
+    });
+
+    const countries = Object.entries(countryMap)
+      .map(([country, users]) => ({ country, users }))
+      .sort((a, b) => b.users - a.users)
+      .slice(0, 5);
+
+    return {
+      visitors,
+      sessions,
+      pageviews,
+      topPages,
+      bounceRate: parseFloat(bounceRate),
+      avgSessionDuration,
+      countries,
+    };
+  } catch (error) {
+    console.error("GA fetch error:", error);
+    return {
+      visitors: 0,
+      sessions: 0,
+      pageviews: 0,
+      topPages: [],
+      bounceRate: 0,
+      avgSessionDuration: 0,
+      countries: [],
+    };
+  }
+}
+
+async function sendDigestEmail(data: AnalyticsData, email: string) {
+  const { accessToken } = await base44.asServiceRole.connectors.getConnection(
+    "gmail"
+  );
+
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const dateStr = yesterday.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  const topPagesHtml = data.topPages
+    .map(
+      (p, i) =>
+        `<tr><td style="padding:8px;border-bottom:1px solid #eee">${i + 1}. ${p.page}</td><td style="padding:8px;border-bottom:1px solid #eee;text-align:right"><strong>${p.views}</strong></td></tr>`
+    )
+    .join("");
+
+  const countriesHtml = data.countries
+    .map(
+      (c) =>
+        `<tr><td style="padding:8px;border-bottom:1px solid #eee">${c.country}</td><td style="padding:8px;border-bottom:1px solid #eee;text-align:right"><strong>${c.users}</strong></td></tr>`
+    )
+    .join("");
+
+  const htmlBody = `
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+  <div style="background: linear-gradient(135deg, #134f2b, #1a6b3a); color: white; padding: 28px; border-radius: 12px 12px 0 0; text-align: center;">
+    <h1 style="margin: 0; font-size: 28px;">VitalPicks Daily Report</h1>
+    <p style="margin: 8px 0 0 0; opacity: 0.9;">${dateStr}</p>
+  </div>
+  
+  <div style="background: white; padding: 28px; border: 1px solid #e2ece5; border-top: none;">
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 28px;">
+      <div style="background: #e8f5ee; padding: 16px; border-radius: 8px; text-align: center;">
+        <div style="font-size: 32px; font-weight: 900; color: #1a6b3a;">${data.visitors}</div>
+        <div style="font-size: 12px; color: #5a6672; font-weight: 600; margin-top: 4px;">VISITORS</div>
+      </div>
+      <div style="background: #e3f2fd; padding: 16px; border-radius: 8px; text-align: center;">
+        <div style="font-size: 32px; font-weight: 900; color: #1565c0;">${data.sessions}</div>
+        <div style="font-size: 12px; color: #5a6672; font-weight: 600; margin-top: 4px;">SESSIONS</div>
+      </div>
+      <div style="background: #fff8e1; padding: 16px; border-radius: 8px; text-align: center;">
+        <div style="font-size: 32px; font-weight: 900; color: #f57f17;">${data.pageviews}</div>
+        <div style="font-size: 12px; color: #5a6672; font-weight: 600; margin-top: 4px;">PAGEVIEWS</div>
+      </div>
+    </div>
+
+    <h2 style="font-size: 18px; font-weight: 800; margin: 24px 0 12px; color: #1a6b3a;">📊 Key Metrics</h2>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+      <tr>
+        <td style="padding: 8px;">Bounce Rate:</td>
+        <td style="padding: 8px; text-align: right; font-weight: 600;">${data.bounceRate}%</td>
+      </tr>
+      <tr style="background: #f7faf8;">
+        <td style="padding: 8px;">Avg. Session Duration:</td>
+        <td style="padding: 8px; text-align: right; font-weight: 600;">${data.avgSessionDuration}s</td>
+      </tr>
+    </table>
+
+    <h2 style="font-size: 18px; font-weight: 800; margin: 24px 0 12px; color: #1a6b3a;">🏆 Top 5 Pages</h2>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 14px;">
+      ${topPagesHtml || '<tr><td style="padding: 8px; color: #999;">No data yet</td></tr>'}
+    </table>
+
+    <h2 style="font-size: 18px; font-weight: 800; margin: 24px 0 12px; color: #1a6b3a;">🌍 Top Countries</h2>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 14px;">
+      ${countriesHtml || '<tr><td style="padding: 8px; color: #999;">No data yet</td></tr>'}
+    </table>
+
+    <div style="background: #f0a500; color: white; padding: 16px; border-radius: 8px; margin-top: 24px;">
+      <strong>💡 Tip:</strong> New content is published daily via automation. Check Google Search Console to track index status and submitting new URLs.
+    </div>
+
+    <p style="font-size: 12px; color: #999; margin-top: 24px; text-align: center;">
+      This is an automated report from VitalPicks. View your full analytics at <a href="https://analytics.google.com" style="color: #1a6b3a;">analytics.google.com</a>
     </p>
   </div>
-</body>
-</html>
-`;
+</div>
+  `;
 
-        const fallbackEmail = {
-          raw: Buffer.from(
-            `From: noreply@vitalpicks.org\r\nTo: gulrajb@gmail.com\r\nSubject: VitalPicks Daily Report - ${dateStr} (Setup in progress)\r\nContent-Type: text/html; charset="UTF-8"\r\n\r\n${fallbackBody}`
-          )
-            .toString("base64")
-            .replace(/\+/g, "-")
-            .replace(/\//g, "_")
-            .replace(/=/g, ""),
-        };
+  const message = {
+    raw: Buffer.from(
+      `From: noreply@vitalpicks.org\r\nTo: ${email}\r\nSubject: VitalPicks Daily Report - ${dateStr}\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=utf-8\r\n\r\n${htmlBody}`
+    ).toString("base64"),
+  };
 
-        await fetch(
-          "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${gmailToken}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(fallbackEmail),
-          }
-        );
+  await fetch("https://gmail.googleapis.com/gmail/v1/users/me/messages/send", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(message),
+  });
+}
 
-        return new Response(
-          JSON.stringify({
-            success: true,
-            message: "Setup email sent (GA data still loading)",
-          }),
-          { status: 200 }
-        );
+export default async function handler(req: Request) {
+  try {
+    const data = await getGoogleAnalyticsData();
+    await sendDigestEmail(data, "gulrajb@gmail.com");
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        message: "Daily digest sent",
+        data: {
+          visitors: data.visitors,
+          sessions: data.sessions,
+          pageviews: data.pageviews,
+        },
+      }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
       }
-    } catch (gaError: any) {
-      console.error("GA fetch error:", gaError.message);
-      // Continue to send a fallback email
-      return new Response(
-        JSON.stringify({
-          success: false,
-          error: gaError.message,
-          message: "Attempted to send fallback email",
-        }),
-        { status: 500 }
-      );
-    }
-  } catch (error: any) {
+    );
+  } catch (error) {
     console.error("Daily digest error:", error);
     return new Response(
       JSON.stringify({
         success: false,
-        error: error.message || "Unknown error",
+        error: String(error),
       }),
-      { status: 500 }
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
     );
   }
 }
