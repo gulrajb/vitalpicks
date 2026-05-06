@@ -29,10 +29,8 @@ export default async function dailyDigest(req: Request) {
 
     console.log(`Fetching GA data for ${dateStr}...`);
 
-    // Get property ID from GA4 account
-    // Note: This uses the GA4 Data API - requires the property ID
-    // If you don't know your property ID, go to GA4 > Admin > Property > Property details
-    const propertyId = "467267425"; // Replace with your actual GA4 property ID
+    // GA4 Property ID for vitalpicks.org - found in GA4 Admin > Property details
+    const propertyId = "467267425";
 
     const analyticsData = await fetchGAData(gaToken, propertyId, dateStr);
 
@@ -42,15 +40,16 @@ export default async function dailyDigest(req: Request) {
     // Send email via Gmail
     await sendEmail(gmailToken, emailContent);
 
+    console.log("Email sent successfully");
     return new Response(
-      JSON.stringify({ success: true, message: "Daily digest sent" }),
-      { status: 200 }
+      JSON.stringify({ success: true, message: "Daily digest sent to gulrajb@gmail.com" }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error in dailyDigest:", error);
     return new Response(
       JSON.stringify({ error: String(error) }),
-      { status: 500 }
+      { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
 }
@@ -94,7 +93,6 @@ async function fetchGAData(
     throw new Error(`GA API failed: ${data.error?.message || "Unknown error"}`);
   }
 
-  // Parse the response
   let totalUsers = 0;
   let totalSessions = 0;
   let totalPageviews = 0;
@@ -103,14 +101,14 @@ async function fetchGAData(
   const pages: { [key: string]: number } = {};
   const countries: { [key: string]: number } = {};
 
-  if (data.rows) {
+  if (data.rows && data.rows.length > 0) {
     data.rows.forEach(
       (row: {
         dimensionValues: Array<{ value: string }>;
         metricValues: Array<{ value: string }>;
       }) => {
-        const pagePath = row.dimensionValues[0]?.value || "direct";
-        const country = row.dimensionValues[1]?.value || "unknown";
+        const pagePath = row.dimensionValues[0]?.value || "/";
+        const country = row.dimensionValues[1]?.value || "Unknown";
         const users = parseInt(row.metricValues[0]?.value || "0");
         const sessions = parseInt(row.metricValues[1]?.value || "0");
         const views = parseInt(row.metricValues[2]?.value || "0");
@@ -123,19 +121,21 @@ async function fetchGAData(
         avgDuration = `${Math.round(duration)}s`;
         bounceRate = `${bounce.toFixed(1)}%`;
 
-        pages[pagePath] = (pages[pagePath] || 0) + views;
-        countries[country] = (countries[country] || 0) + users;
+        if (views > 0) {
+          pages[pagePath] = (pages[pagePath] || 0) + views;
+        }
+        if (users > 0) {
+          countries[country] = (countries[country] || 0) + users;
+        }
       }
     );
   }
 
-  // Get top 5 pages
   const topPages = Object.entries(pages)
     .sort(([, a], [, b]) => b - a)
     .slice(0, 5)
-    .map(([page, views]) => ({ page, views }));
+    .map(([page, views]) => ({ page: page || "/", views }));
 
-  // Get top 5 countries
   const topCountries = Object.entries(countries)
     .sort(([, a], [, b]) => b - a)
     .slice(0, 5)
@@ -147,8 +147,8 @@ async function fetchGAData(
     pageviews: totalPageviews,
     avgSessionDuration: avgDuration,
     bounceRate: bounceRate,
-    topPages,
-    topCountries,
+    topPages: topPages.length > 0 ? topPages : [{ page: "/", views: 0 }],
+    topCountries: topCountries.length > 0 ? topCountries : [{ country: "Not tracked yet", users: 0 }],
   };
 }
 
@@ -164,7 +164,7 @@ function buildEmailHTML(data: AnalyticsData, dateStr: string): string {
   const topPagesHTML = data.topPages
     .map(
       (p, i) =>
-        `<tr style="border-bottom:1px solid #e0e0e0"><td style="padding:10px;text-align:center;font-weight:bold">${i + 1}</td><td style="padding:10px">${p.page || "/"}</td><td style="padding:10px;text-align:right;font-weight:bold">${p.views}</td></tr>`
+        `<tr style="border-bottom:1px solid #e0e0e0"><td style="padding:10px;text-align:center;font-weight:bold">${i + 1}</td><td style="padding:10px">${p.page}</td><td style="padding:10px;text-align:right;font-weight:bold">${p.views}</td></tr>`
     )
     .join("");
 
@@ -185,13 +185,11 @@ function buildEmailHTML(data: AnalyticsData, dateStr: string): string {
 <body style="font-family:Arial,sans-serif;background:#f5f5f5;margin:0;padding:20px">
   <div style="max-width:600px;margin:0 auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1)">
     
-    <!-- Header -->
     <div style="background:linear-gradient(135deg,#1a6b3a,#2d9b5a);color:#fff;padding:30px;text-align:center">
       <h1 style="margin:0;font-size:24px">📊 VitalPicks Daily Report</h1>
       <p style="margin:8px 0 0;opacity:0.9">${dateFormatted}</p>
     </div>
 
-    <!-- Stats Cards -->
     <div style="padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
       <div style="background:#f0f9f4;border-radius:8px;padding:16px;text-align:center;border-left:4px solid #1a6b3a">
         <div style="font-size:12px;color:#5a6672;text-transform:uppercase;font-weight:700;margin-bottom:8px">Visitors</div>
@@ -211,7 +209,6 @@ function buildEmailHTML(data: AnalyticsData, dateStr: string): string {
       </div>
     </div>
 
-    <!-- Top Pages -->
     <div style="padding:24px;border-top:1px solid #e0e0e0">
       <h2 style="margin:0 0 16px;font-size:16px;color:#1a1a1a">🏆 Top Pages</h2>
       <table style="width:100%;border-collapse:collapse">
@@ -228,7 +225,6 @@ function buildEmailHTML(data: AnalyticsData, dateStr: string): string {
       </table>
     </div>
 
-    <!-- Top Countries -->
     <div style="padding:24px;border-top:1px solid #e0e0e0">
       <h2 style="margin:0 0 16px;font-size:16px;color:#1a1a1a">🌍 Top Countries</h2>
       <table style="width:100%;border-collapse:collapse">
@@ -244,7 +240,6 @@ function buildEmailHTML(data: AnalyticsData, dateStr: string): string {
       </table>
     </div>
 
-    <!-- Footer -->
     <div style="padding:24px;text-align:center;background:#f9faf8;border-top:1px solid #e0e0e0">
       <p style="margin:0;font-size:13px;color:#5a6672">
         This report is generated automatically every day at 9:00 AM IST.
@@ -258,7 +253,6 @@ function buildEmailHTML(data: AnalyticsData, dateStr: string): string {
 }
 
 async function sendEmail(accessToken: string, htmlContent: string): Promise<void> {
-  // Build RFC 2822 email message
   const to = "gulrajb@gmail.com";
   const subject = `VitalPicks Daily Report - ${new Date().toLocaleDateString()}`;
 
@@ -279,8 +273,6 @@ async function sendEmail(accessToken: string, htmlContent: string): Promise<void
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(`Failed to send email: ${error.error?.message || "Unknown error"}`);
+    throw new Error(`Gmail API failed: ${error.error?.message || "Unknown error"}`);
   }
-
-  console.log("Email sent successfully");
 }
