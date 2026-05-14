@@ -1,324 +1,287 @@
-import { createClient } from '@base44/sdk';
+import { createClientFromRequest } from '@base44/sdk';
 
-interface AnalyticsResponse {
-  rows?: Array<{ values: string[] }>;
-  rowCount: number;
+interface GAResponse {
+  rows?: Array<{
+    dimensionValues?: Array<{ value: string }>;
+    metricValues?: Array<{ value: string }>;
+  }>;
 }
 
-interface EmailPayload {
-  to: string;
-  subject: string;
-  body: string;
-  mimeType?: string;
-}
-
-async function sendEmail(
-  accessToken: string,
-  to: string,
-  subject: string,
-  htmlBody: string
-): Promise<void> {
-  const boundary = 'boundary_' + Math.random().toString(36).slice(2);
-  
-  const mimeMessage = [
-    `From: me`,
-    `To: ${to}`,
-    `Subject: =?UTF-8?B?${Buffer.from(subject).toString('base64')}?=`,
-    `MIME-Version: 1.0`,
-    `Content-Type: multipart/alternative; boundary="${boundary}"`,
-    ``,
-    `--${boundary}`,
-    `Content-Type: text/html; charset=UTF-8`,
-    `Content-Transfer-Encoding: base64`,
-    ``,
-    Buffer.from(htmlBody).toString('base64'),
-    `--${boundary}--`
-  ].join('\r\n');
-
-  const encoded = Buffer.from(mimeMessage)
-    .toString('base64')
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=/g, '');
-
-  const response = await fetch(
-    'https://gmail.googleapis.com/gmail/v1/users/me/messages/send',
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ raw: encoded }),
-    }
-  );
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Gmail send failed: ${response.status} ${error}`);
-  }
-}
-
-async function getGAData(
-  accessToken: string,
-  propertyId: string,
-  startDate: string,
-  endDate: string
-): Promise<any> {
-  const response = await fetch(
-    'https://analyticsdata.googleapis.com/v1beta/properties/' + propertyId + ':runReport',
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        dateRanges: [{ startDate, endDate }],
-        metrics: [
-          { name: 'activeUsers' },
-          { name: 'sessions' },
-          { name: 'screenPageViews' },
-          { name: 'bounceRate' },
-        ],
-        dimensions: [{ name: 'pagePath' }],
-        limit: '5',
-        orderBys: [{ metric: { name: 'screenPageViews' }, desc: true }],
-      }),
-    }
-  );
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`GA4 API error: ${response.status} ${error}`);
-  }
-
-  return response.json();
-}
-
-async function getCountryData(
-  accessToken: string,
-  propertyId: string,
-  startDate: string,
-  endDate: string
-): Promise<any> {
-  const response = await fetch(
-    'https://analyticsdata.googleapis.com/v1beta/properties/' + propertyId + ':runReport',
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        dateRanges: [{ startDate, endDate }],
-        metrics: [{ name: 'activeUsers' }, { name: 'sessions' }],
-        dimensions: [{ name: 'country' }],
-        limit: '5',
-        orderBys: [{ metric: { name: 'activeUsers' }, desc: true }],
-      }),
-    }
-  );
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`GA4 country API error: ${response.status} ${error}`);
-  }
-
-  return response.json();
-}
-
-export default async function dailyDigest(req: Request): Promise<Response> {
+export default async function dailyDigest(req: Request) {
   try {
-    const base44 = createClient({
-      appId: process.env.BASE44_APP_ID!,
-      token: process.env.BASE44_SERVICE_TOKEN!,
-      serverUrl: process.env.BASE44_API_URL!,
-    });
-
-    // Get Gmail access token
-    const gmailConn = await base44.asServiceRole.connectors.getConnection('gmail');
-    const gmailToken = gmailConn.accessToken;
-
-    // Get Google Analytics access token
-    const gaConn = await base44.asServiceRole.connectors.getConnection('google_analytics');
-    const gaToken = gaConn.accessToken;
-
-    // Calculate dates (yesterday)
+    const base44 = createClientFromRequest(req);
+    
+    // Get tokens
+    const { accessToken: gmailToken } = await base44.asServiceRole.connectors.getConnection('gmail');
+    const { accessToken: gaToken } = await base44.asServiceRole.connectors.getConnection('google_analytics');
+    
+    // Calculate yesterday's date
     const today = new Date();
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
-
-    const startDate = yesterday.toISOString().split('T')[0]; // YYYY-MM-DD
-    const endDate = yesterday.toISOString().split('T')[0];
-
-    // Property ID from GA measurement ID — extract number
-    // G-WDJ43RHQ7B -> property 456389734 (you'll need to map this)
-    // For now, use a placeholder — user needs to provide their GA4 Property ID
-    const propertyId = process.env.GA_PROPERTY_ID || '456389734';
-
-    // Fetch GA data
-    const pageData = await getGAData(gaToken, propertyId, startDate, endDate);
-    const countryData = await getCountryData(gaToken, propertyId, startDate, endDate);
-
-    // Parse results
-    let visitors = '0';
-    let sessions = '0';
-    let pageviews = '0';
-    let bounceRate = '0%';
-    let topPages = '<tr><td colspan="2" style="text-align:center;padding:10px;color:#999;">No data yet</td></tr>';
-    let topCountries = '<tr><td colspan="2" style="text-align:center;padding:10px;color:#999;">No data yet</td></tr>';
-
-    if (pageData.rows && pageData.rows.length > 0) {
-      // First row has aggregate metrics
-      const firstRow = pageData.rows[0];
-      if (firstRow.values) {
-        pageviews = firstRow.values[2] || '0'; // screenPageViews is 3rd metric
-        bounceRate = (parseFloat(firstRow.values[3] || '0')).toFixed(1) + '%';
-        visitors = firstRow.values[0] || '0';
-        sessions = firstRow.values[1] || '0';
+    const dateStr = yesterday.toISOString().split('T')[0];
+    
+    // Get property ID from Analytics (must be set up manually or via config)
+    // For now, we'll fetch from GA4 Admin API to find the property
+    const properties = await fetch(
+      'https://analyticsadmin.googleapis.com/v1beta/accounts/~all/properties',
+      { headers: { Authorization: `Bearer ${gaToken}` } }
+    ).then(r => r.json() as Promise<{ properties?: Array<{ name: string; displayName: string }> }>);
+    
+    const propertyId = properties.properties?.[0]?.name?.split('/')[3] || '';
+    if (!propertyId) {
+      return new Response(JSON.stringify({ error: 'No GA4 property found' }), { status: 400 });
+    }
+    
+    // Fetch GA4 data for yesterday
+    const gaBody = {
+      dateRanges: [{ startDate: dateStr, endDate: dateStr }],
+      dimensions: [
+        { name: 'pagePath' },
+        { name: 'country' }
+      ],
+      metrics: [
+        { name: 'activeUsers' },
+        { name: 'sessions' },
+        { name: 'screenPageViews' },
+        { name: 'bounceRate' },
+        { name: 'averageSessionDuration' }
+      ],
+      orderBys: [
+        { metric: { metricName: 'activeUsers' }, descending: true }
+      ],
+      limit: 100
+    };
+    
+    const gaRes = await fetch(
+      `https://analyticsreporting.googleapis.com/v4/reports:batchGet`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${gaToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          reportRequests: [gaBody]
+        })
       }
-
-      // Build top pages table
-      topPages = pageData.rows
-        .slice(0, 5)
-        .map((row: any, idx: number) => {
-          const pagePath = row.dimensions?.[0] || '/';
-          const pv = row.values?.[2] || '0';
-          return `<tr style="border-bottom:1px solid #eee;"><td style="padding:8px;font-weight:600;">${pagePath}</td><td style="padding:8px;text-align:right;color:#1a6b3a;">${pv}</td></tr>`;
-        })
-        .join('');
-    }
-
-    if (countryData.rows && countryData.rows.length > 0) {
-      topCountries = countryData.rows
-        .slice(0, 5)
-        .map((row: any) => {
-          const country = row.dimensions?.[0] || 'Unknown';
-          const users = row.values?.[0] || '0';
-          return `<tr style="border-bottom:1px solid #eee;"><td style="padding:8px;">${country}</td><td style="padding:8px;text-align:right;color:#1a6b3a;font-weight:600;">${users}</td></tr>`;
-        })
-        .join('');
-    }
-
-    // Format HTML email
-    const htmlBody = `
+    );
+    
+    const gaData = await gaRes.json() as {
+      reports?: Array<{
+        data?: {
+          rows?: Array<{
+            dimensions?: string[];
+            metrics?: Array<{ values?: string[] }>;
+          }>;
+          totals?: Array<{ values?: string[] }>;
+          rowCount?: number;
+        };
+      }>;
+    };
+    
+    const report = gaData.reports?.[0]?.data;
+    const rows = report?.rows || [];
+    const totals = report?.totals?.[0]?.values || [];
+    
+    // Parse data
+    const totalUsers = parseInt(totals[0] || '0');
+    const totalSessions = parseInt(totals[1] || '0');
+    const totalPageviews = parseInt(totals[2] || '0');
+    const avgBounceRate = parseFloat(totals[3] || '0').toFixed(1);
+    const avgSessionDuration = parseFloat(totals[4] || '0').toFixed(0);
+    
+    // Top pages
+    const topPages = rows.slice(0, 5).map((row, i) => ({
+      rank: i + 1,
+      page: row.dimensions?.[0] || '/',
+      users: row.metrics?.[0]?.values?.[0] || '0',
+      views: row.metrics?.[0]?.values?.[2] || '0'
+    }));
+    
+    // Top countries
+    const countryMap = new Map<string, { users: number; sessions: number }>();
+    rows.forEach(row => {
+      const country = row.dimensions?.[1] || 'Unknown';
+      const users = parseInt(row.metrics?.[0]?.values?.[0] || '0');
+      const sessions = parseInt(row.metrics?.[0]?.values?.[1] || '0');
+      const curr = countryMap.get(country) || { users: 0, sessions: 0 };
+      countryMap.set(country, {
+        users: curr.users + users,
+        sessions: curr.sessions + sessions
+      });
+    });
+    
+    const topCountries = Array.from(countryMap.entries())
+      .sort((a, b) => b[1].users - a[1].users)
+      .slice(0, 5)
+      .map(([country, data], i) => ({
+        rank: i + 1,
+        country,
+        users: data.users,
+        sessions: data.sessions
+      }));
+    
+    // Build email HTML
+    const emailHtml = `
 <!DOCTYPE html>
 <html>
 <head>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a1a; }
-    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-    .header { background: linear-gradient(135deg, #134f2b, #1a6b3a); color: white; padding: 24px; border-radius: 8px; margin-bottom: 24px; text-align: center; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a1a; line-height: 1.6; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; background: #f7faf8; }
+    .card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #e2ece5; }
+    .header { background: linear-gradient(135deg, #134f2b, #1a6b3a); color: #fff; padding: 32px 24px; border-radius: 12px 12px 0 0; text-align: center; }
     .header h1 { margin: 0; font-size: 24px; }
-    .header p { margin: 4px 0 0; opacity: 0.9; font-size: 14px; }
-    .section { background: white; border: 1px solid #e2ece5; border-radius: 8px; padding: 20px; margin-bottom: 16px; }
-    .section h2 { font-size: 16px; color: #1a6b3a; margin: 0 0 14px; border-bottom: 2px solid #e8f5ee; padding-bottom: 10px; }
-    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-    .stat { background: #f7faf8; padding: 12px; border-radius: 6px; }
-    .stat-value { font-size: 24px; font-weight: 900; color: #1a6b3a; }
-    .stat-label { font-size: 12px; color: #5a6672; margin-top: 4px; }
-    table { width: 100%; border-collapse: collapse; }
-    .footer { text-align: center; font-size: 12px; color: #999; margin-top: 24px; }
+    .header p { margin: 8px 0 0 0; opacity: 0.9; font-size: 14px; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .stat-box { background: #f7faf8; padding: 16px; border-radius: 8px; text-align: center; border-left: 4px solid #1a6b3a; }
+    .stat-value { font-size: 28px; font-weight: 900; color: #1a6b3a; margin: 0; }
+    .stat-label { font-size: 12px; color: #5a6672; text-transform: uppercase; font-weight: 600; margin-top: 6px; }
+    .table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    .table th { background: #e8f5ee; padding: 12px; text-align: left; font-size: 12px; font-weight: 700; text-transform: uppercase; color: #1a6b3a; border-bottom: 2px solid #1a6b3a; }
+    .table td { padding: 12px; border-bottom: 1px solid #e2ece5; }
+    .table tr:hover { background: #f7faf8; }
+    .rank { color: #1a6b3a; font-weight: 700; }
+    .page-name { font-weight: 600; color: #1a1a1a; }
+    .footer { text-align: center; font-size: 12px; color: #5a6672; margin-top: 24px; padding-top: 16px; border-top: 1px solid #e2ece5; }
+    .timestamp { color: #5a6672; font-size: 13px; }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <h1>📊 VitalPicks Daily Report</h1>
-      <p>${startDate} — Yesterday's Performance</p>
-    </div>
-
-    <div class="section">
-      <h2>📈 Key Metrics</h2>
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-value">${visitors}</div>
-          <div class="stat-label">Visitors</div>
+    <div class="card">
+      <div class="header">
+        <h1>💚 VitalPicks Daily Report</h1>
+        <p>Yesterday's Traffic & Performance</p>
+      </div>
+      
+      <div style="padding: 24px;">
+        <p class="timestamp">📅 Report for: <strong>${dateStr}</strong></p>
+        
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-value">${totalUsers}</div>
+            <div class="stat-label">Visitors</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">${totalSessions}</div>
+            <div class="stat-label">Sessions</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">${totalPageviews}</div>
+            <div class="stat-label">Pageviews</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">${avgSessionDuration}s</div>
+            <div class="stat-label">Avg Duration</div>
+          </div>
         </div>
-        <div class="stat">
-          <div class="stat-value">${sessions}</div>
-          <div class="stat-label">Sessions</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value">${pageviews}</div>
-          <div class="stat-label">Pageviews</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value">${bounceRate}</div>
-          <div class="stat-label">Bounce Rate</div>
+        
+        <h3 style="margin-top: 28px; margin-bottom: 12px; color: #1a6b3a;">🏆 Top 5 Pages</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Page</th>
+              <th>Visitors</th>
+              <th>Views</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${topPages.map(p => `
+              <tr>
+                <td class="rank">${p.rank}</td>
+                <td class="page-name">${p.page}</td>
+                <td>${p.users}</td>
+                <td>${p.views}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        
+        <h3 style="margin-top: 28px; margin-bottom: 12px; color: #1a6b3a;">🌍 Top Countries</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Country</th>
+              <th>Visitors</th>
+              <th>Sessions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${topCountries.map(c => `
+              <tr>
+                <td class="rank">${c.rank}</td>
+                <td>${c.country}</td>
+                <td>${c.users}</td>
+                <td>${c.sessions}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        
+        <div style="background: #e8f5ee; border-left: 4px solid #1a6b3a; padding: 16px; margin-top: 24px; border-radius: 4px;">
+          <p style="margin: 0; font-size: 14px; color: #1a6b3a;"><strong>💡 Tip:</strong> Check your top pages for optimization opportunities. Consider promoting underperforming but high-value pages through internal linking.</p>
         </div>
       </div>
     </div>
-
-    <div class="section">
-      <h2>🔥 Top Pages</h2>
-      <table>
-        <thead>
-          <tr style="background: #f7faf8; border-bottom: 2px solid #e2ece5;">
-            <th style="padding: 10px; text-align: left; font-weight: 700; font-size: 12px; color: #1a6b3a;">Page</th>
-            <th style="padding: 10px; text-align: right; font-weight: 700; font-size: 12px; color: #1a6b3a;">Views</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${topPages}
-        </tbody>
-      </table>
-    </div>
-
-    <div class="section">
-      <h2>🌍 Top Countries</h2>
-      <table>
-        <thead>
-          <tr style="background: #f7faf8; border-bottom: 2px solid #e2ece5;">
-            <th style="padding: 10px; text-align: left; font-weight: 700; font-size: 12px; color: #1a6b3a;">Country</th>
-            <th style="padding: 10px; text-align: right; font-weight: 700; font-size: 12px; color: #1a6b3a;">Visitors</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${topCountries}
-        </tbody>
-      </table>
-    </div>
-
+    
     <div class="footer">
-      <p>VitalPicks Analytics • Automated daily report</p>
-      <p style="margin: 8px 0 0; color: #ccc;">Data from Google Analytics 4</p>
+      <p>VitalPicks Daily Digest • Sent automatically each morning at 9:00 AM IST</p>
+      <p><a href="https://analytics.google.com" style="color: #1a6b3a; text-decoration: none;">View Full Analytics →</a></p>
     </div>
   </div>
 </body>
 </html>
     `;
-
-    // Send email
-    await sendEmail(gmailToken, 'gulrajb@gmail.com', `VitalPicks Daily Report — ${startDate}`, htmlBody);
-
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: 'Daily digest sent successfully',
-        data: {
-          date: startDate,
-          visitors,
-          sessions,
-          pageviews,
-          bounceRate,
-          topPagesCount: pageData.rows?.length || 0,
-          topCountriesCount: countryData.rows?.length || 0,
+    
+    // Build MIME message for Gmail
+    const from = 'gulrajb@gmail.com';
+    const to = 'gulrajb@gmail.com';
+    const subject = `VitalPicks Daily Report — ${dateStr} (${totalUsers} visitors)`;
+    
+    const mimeMessage = [
+      `From: <${from}>`,
+      `To: <${to}>`,
+      `Subject: ${subject}`,
+      `MIME-Version: 1.0`,
+      `Content-Type: text/html; charset=utf-8`,
+      ``,
+      emailHtml
+    ].join('\r\n');
+    
+    const encodedMessage = btoa(mimeMessage).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    
+    // Send via Gmail
+    const sendRes = await fetch(
+      'https://www.googleapis.com/gmail/v1/users/me/messages/send',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${gmailToken}`,
+          'Content-Type': 'application/json'
         },
-      }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
+        body: JSON.stringify({
+          raw: encodedMessage
+        })
+      }
     );
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error('Daily digest error:', message);
-
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: message,
-      }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+    
+    if (!sendRes.ok) {
+      const err = await sendRes.text();
+      return new Response(JSON.stringify({ error: 'Failed to send email', details: err }), { status: 500 });
+    }
+    
+    return new Response(JSON.stringify({
+      success: true,
+      message: `Daily digest sent to ${to}`,
+      stats: { users: totalUsers, sessions: totalSessions, pageviews: totalPageviews, topPages: topPages.length }
+    }), { status: 200 });
+    
+  } catch (err) {
+    console.error('Error:', err);
+    return new Response(JSON.stringify({ error: String(err) }), { status: 500 });
   }
 }
