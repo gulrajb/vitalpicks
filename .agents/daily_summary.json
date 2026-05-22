@@ -1,36 +1,14 @@
 {
-  "date": "2026-05-21",
-  "day": "Thursday",
-  "theme": "Weight Loss",
-  "articles_created": 3,
-  "new_articles": [
-    {
-      "title": "Best Green Tea Extract Supplements",
-      "url": "https://www.vitalpicks.org/best-green-tea-extract-supplements.html",
-      "status": "\u2713 Published"
-    },
-    {
-      "title": "Best Garcinia Cambogia Supplements",
-      "url": "https://www.vitalpicks.org/best-garcinia-cambogia-supplements.html",
-      "status": "\u2713 Published"
-    },
-    {
-      "title": "Best CLA Supplements for Weight Loss",
-      "url": "https://www.vitalpicks.org/best-cla-supplements.html",
-      "status": "\u2713 Published"
-    }
+  "date": "2026-05-22",
+  "theme": "Recovery & Wellness (Friday)",
+  "articles_published": 3,
+  "article_titles": [
+    "Best Magnesium Supplements for Sleep & Muscle Recovery",
+    "Best Recovery Drinks & Post-Workout Supplements",
+    "Best Stretching & Mobility Tools for Flexibility"
   ],
-  "tasks_completed": [
-    "\u2713 3 SEO-optimized articles created with full template",
-    "\u2713 Structured data (JSON-LD) added to all articles",
-    "\u2713 Affiliate links integrated (Amazon Associates)",
-    "\u2713 Sitemap updated (now 149 total URLs)",
-    "\u2713 Changes pushed to GitHub repository"
-  ],
-  "site_stats": {
-    "total_pages": 149,
-    "article_pages": 144,
-    "theme": "Weight Loss (today's rotation)"
-  },
-  "next_theme": "Recovery & Wellness (Friday, May 22)"
+  "total_site_pages": 149,
+  "sitemap_updated": true,
+  "github_pushed": true,
+  "internal_links_added": 0
 }
