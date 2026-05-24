@@ -1,0 +1,24 @@
+{
+  "date": "2026-05-24T03:30:53.537795",
+  "theme": "Health Devices",
+  "articles": [
+    {
+      "title": "Best Fitness Smartwatches for 2026",
+      "slug": "best-fitness-smartwatches-2026",
+      "keyword": "best fitness smartwatches",
+      "description": "Complete guide to top smartwatches for tracking workouts, heart rate, sleep, and daily activity with app integration and battery life."
+    },
+    {
+      "title": "Best Wearable Blood Pressure Monitors",
+      "slug": "best-wearable-blood-pressure-monitors",
+      "keyword": "wearable blood pressure monitors",
+      "description": "Review of the best wearable and portable blood pressure monitors for accurate continuous monitoring and health tracking."
+    },
+    {
+      "title": "Best Smart Rings for Health Tracking",
+      "slug": "best-smart-rings-health-tracking",
+      "keyword": "best smart rings health tracking",
+      "description": "Guide to the top smart rings for tracking sleep, heart rate variability, temperature, and overall wellness metrics."
+    }
+  ]
+}
