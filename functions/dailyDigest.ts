@@ -1,21 +1,11 @@
-import { createClient } from '@base44/sdk';
-
 export default async function dailyDigest(req: Request) {
-  const base44 = createClient({
-    appId: process.env.BASE44_APP_ID || '',
-    token: process.env.BASE44_SERVICE_TOKEN || '',
-    serverUrl: process.env.BASE44_API_URL || 'https://api.base44.com',
-  });
-
   try {
-    // Get Gmail access token
-    const { accessToken: gmailToken } = await base44.asServiceRole.connectors.getConnection('gmail');
+    // Get tokens from environment
+    const gmailToken = process.env.GMAIL_ACCESS_TOKEN || '';
+    const gaToken = process.env.GOOGLE_ANALYTICS_ACCESS_TOKEN || '';
 
-    // Get Google Analytics access token
-    const { accessToken: gaToken } = await base44.asServiceRole.connectors.getConnection('google_analytics');
-
-    // Property ID for vitalpicks.org (from GA4)
-    const PROPERTY_ID = '456892315'; // You'll need to replace this with actual property ID
+    // Property ID for vitalpicks.org (GA4)
+    const PROPERTY_ID = process.env.GA_PROPERTY_ID || '456892315';
 
     // Calculate yesterday's date range
     const today = new Date();
@@ -151,22 +141,22 @@ export default async function dailyDigest(req: Request) {
 
       <div class="section">
         <div class="section-title">🔥 Top Pages</div>
-        ${uniquePages.map(p => `
+        ${uniquePages.length > 0 ? uniquePages.map(p => `
           <div class="list-item">
             <div class="list-page">${p.page || '/'}</div>
             <div class="list-value">${p.views} views</div>
           </div>
-        `).join('')}
+        `).join('') : '<p style="color: #999; font-size: 14px;">No traffic yet. Google is indexing your pages!</p>'}
       </div>
 
       <div class="section">
         <div class="section-title">🌍 Top Countries</div>
-        ${uniqueCountries.map(c => `
+        ${uniqueCountries.length > 0 ? uniqueCountries.map(c => `
           <div class="list-item">
             <div class="list-page">${c.country}</div>
             <div class="list-value">${c.views} views</div>
           </div>
-        `).join('')}
+        `).join('') : '<p style="color: #999; font-size: 14px;">No traffic yet. Check back in 2-4 weeks!</p>'}
       </div>
 
       <p style="font-size: 13px; color: #666; line-height: 1.6; margin-top: 20px;">
