@@ -1,24 +1,22 @@
 {
-  "date": "2026-05-24T03:30:53.537795",
-  "theme": "Health Devices",
-  "articles": [
+  "date": "2026-05-27T03:36:44.318084",
+  "theme": "Women's Health",
+  "articles_created": [
     {
-      "title": "Best Fitness Smartwatches for 2026",
-      "slug": "best-fitness-smartwatches-2026",
-      "keyword": "best fitness smartwatches",
-      "description": "Complete guide to top smartwatches for tracking workouts, heart rate, sleep, and daily activity with app integration and battery life."
+      "title": "Best Women's Probiotics for Digestive & Vaginal Health 2026",
+      "slug": "best-womens-probiotics-digestive-vaginal-health",
+      "url": "https://www.vitalpicks.org/best-best-womens-probiotics-digestive-vaginal-health.html"
     },
     {
-      "title": "Best Wearable Blood Pressure Monitors",
-      "slug": "best-wearable-blood-pressure-monitors",
-      "keyword": "wearable blood pressure monitors",
-      "description": "Review of the best wearable and portable blood pressure monitors for accurate continuous monitoring and health tracking."
+      "title": "Best Thyroid Supplements for Women 2026",
+      "slug": "best-thyroid-supplements-women",
+      "url": "https://www.vitalpicks.org/best-best-thyroid-supplements-women.html"
     },
     {
-      "title": "Best Smart Rings for Health Tracking",
-      "slug": "best-smart-rings-health-tracking",
-      "keyword": "best smart rings health tracking",
-      "description": "Guide to the top smart rings for tracking sleep, heart rate variability, temperature, and overall wellness metrics."
+      "title": "Best Supplements for Hormonal Acne in Women",
+      "slug": "best-supplements-hormonal-acne-women",
+      "url": "https://www.vitalpicks.org/best-best-supplements-hormonal-acne-women.html"
     }
-  ]
+  ],
+  "total_articles_count": 161
 }
