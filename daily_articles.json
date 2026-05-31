@@ -1,22 +1,15 @@
 {
-  "date": "2026-05-27T03:36:44.318084",
-  "theme": "Women's Health",
-  "articles_created": [
-    {
-      "title": "Best Women's Probiotics for Digestive & Vaginal Health 2026",
-      "slug": "best-womens-probiotics-digestive-vaginal-health",
-      "url": "https://www.vitalpicks.org/best-best-womens-probiotics-digestive-vaginal-health.html"
-    },
-    {
-      "title": "Best Thyroid Supplements for Women 2026",
-      "slug": "best-thyroid-supplements-women",
-      "url": "https://www.vitalpicks.org/best-best-thyroid-supplements-women.html"
-    },
-    {
-      "title": "Best Supplements for Hormonal Acne in Women",
-      "slug": "best-supplements-hormonal-acne-women",
-      "url": "https://www.vitalpicks.org/best-best-supplements-hormonal-acne-women.html"
-    }
+  "date": "2026-05-31",
+  "articles_added_today": 3,
+  "articles_added": [
+    "best-wearable-patch-monitors-2026.html",
+    "best-portable-ultrasound-devices-home-2026.html",
+    "best-personal-air-quality-monitors-2026.html"
   ],
-  "total_articles_count": 161
+  "internal_links_added": 5,
+  "total_pages": 178,
+  "theme_today": "Health Devices",
+  "next_theme": "Supplements (Monday)",
+  "github_push": "Success",
+  "sitemap_updated": true
 }
