@@ -1,21 +1,18 @@
-{
-  "date": "2026-06-01T03:30:52.283414",
-  "theme": "Supplements",
-  "articles": [
-    {
-      "slug": "nad+-boosters-and-nmn-supplements",
-      "title": "Best NAD+ Boosters & NMN Supplements for Energy & Longevity",
-      "keyword": "NAD+ Boosters & NMN Supplements"
-    },
-    {
-      "slug": "vitamin-e-supplements",
-      "title": "Best Vitamin E Supplements for Antioxidant Protection",
-      "keyword": "Vitamin E Supplements"
-    },
-    {
-      "slug": "lutein-and-zeaxanthin-supplements",
-      "title": "Best Lutein & Zeaxanthin for Eye Health",
-      "keyword": "Lutein & Zeaxanthin Supplements"
-    }
-  ]
-}
+[
+  {
+    "title": "Best Intermittent Fasting Guides and Apps",
+    "slug": "best-intermittent-fasting-apps-2026",
+    "focus": "Top fasting protocols and apps to track intermittent fasting routines",
+    "category": "Weight Loss",
+    "date": "2026-06-04",
+    "status": "generated"
+  },
+  {
+    "title": "Best Appetite Suppressants for Weight Loss",
+    "slug": "best-appetite-suppressants-2026",
+    "focus": "Natural and pharmaceutical appetite suppressants to reduce food cravings",
+    "category": "Weight Loss",
+    "date": "2026-06-04",
+    "status": "generated"
+  }
+]
