@@ -1,21 +1,23 @@
 {
-  "date": "2026-06-01",
-  "time": "03:31 IST",
-  "theme": "Supplements",
-  "articles_added": 3,
-  "new_articles": [
-    "Best NAD+ Boosters & NMN Supplements for Energy & Longevity",
-    "Best Vitamin E Supplements for Antioxidant Protection",
-    "Best Lutein & Zeaxanthin for Eye Health"
+  "date": "2026-06-04",
+  "theme": "Weight Loss",
+  "articles_created": 2,
+  "articles": [
+    {
+      "title": "Best Intermittent Fasting Guides and Apps",
+      "url": "https://www.vitalpicks.org/best-intermittent-fasting-apps-2026.html",
+      "focus": "Top fasting protocols and apps to track intermittent fasting routines"
+    },
+    {
+      "title": "Best Appetite Suppressants for Weight Loss",
+      "url": "https://www.vitalpicks.org/best-appetite-suppressants-2026.html",
+      "focus": "Natural and pharmaceutical appetite suppressants to reduce food cravings"
+    }
   ],
-  "total_pages": 181,
-  "actions_completed": [
-    "\u2713 Generated 3 SEO-optimized supplement articles",
-    "\u2713 Added internal links to existing content",
-    "\u2713 Updated sitemap.xml with all new URLs",
-    "\u2713 Pushed changes to GitHub repository",
-    "\u2713 Prepared for Google Search Console submission"
-  ],
-  "next_theme": "Fitness Gear (Tuesday)",
-  "status": "SUCCESS"
+  "site_status": {
+    "total_pages": 189,
+    "sitemap_updated": true,
+    "github_pushed": true,
+    "gsc_queued": true
+  }
 }
