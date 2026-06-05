@@ -14,5 +14,148 @@
     "category": "Weight Loss",
     "date": "2026-06-04",
     "status": "generated"
+  },
+  {
+    "title": "Best Compression Boots for Recovery",
+    "slug": "best-compression-boots-recovery",
+    "category": "Recovery & Wellness",
+    "theme": "Recovery",
+    "products": [
+      {
+        "name": "Normatec 3",
+        "asin": "B0BXYZ123",
+        "price": "$3,995",
+        "pros": [
+          "Clinical-grade",
+          "Most research-backed",
+          "Customizable settings"
+        ],
+        "cons": [
+          "Expensive",
+          "Requires space"
+        ]
+      },
+      {
+        "name": "Air Relax Plus 2.0",
+        "asin": "B0CZABC456",
+        "price": "$1,899",
+        "pros": [
+          "More affordable",
+          "Compact design",
+          "4 attachments"
+        ],
+        "cons": [
+          "Less powerful than Normatec"
+        ]
+      },
+      {
+        "name": "Vyper Compression Boots",
+        "asin": "B09DEFG789",
+        "price": "$499",
+        "pros": [
+          "Budget-friendly",
+          "Portable",
+          "Easy to use"
+        ],
+        "cons": [
+          "Less advanced features"
+        ]
+      }
+    ],
+    "created": "2026-06-05"
+  },
+  {
+    "title": "Best Foam Rolling Techniques for Recovery",
+    "slug": "best-foam-rolling-techniques-recovery",
+    "category": "Recovery & Wellness",
+    "theme": "Recovery",
+    "products": [
+      {
+        "name": "TriggerPoint Grid Roller",
+        "asin": "B00KJRNQ3C",
+        "price": "$49",
+        "pros": [
+          "Affordable",
+          "Durable",
+          "Proven technology"
+        ],
+        "cons": [
+          "Standard density only"
+        ]
+      },
+      {
+        "name": "Theragun Elite",
+        "asin": "B085GSRXYZ",
+        "price": "$199",
+        "pros": [
+          "5 attachments",
+          "Quiet motor",
+          "Bluetooth app"
+        ],
+        "cons": [
+          "Battery-dependent"
+        ]
+      },
+      {
+        "name": "Rumble Roller",
+        "asin": "B004O5JO68",
+        "price": "$89",
+        "pros": [
+          "Unique bumpy design",
+          "Great for trigger points"
+        ],
+        "cons": [
+          "Firmer than standard"
+        ]
+      }
+    ],
+    "created": "2026-06-05"
+  },
+  {
+    "title": "Best Sleep Supplements for Athletes",
+    "slug": "best-sleep-supplements-athletes",
+    "category": "Recovery & Wellness",
+    "theme": "Recovery",
+    "products": [
+      {
+        "name": "Magnesium Glycinate (Thorne)",
+        "asin": "B000MXFQ0C",
+        "price": "$25",
+        "pros": [
+          "High bioavailability",
+          "No laxative effect",
+          "Quality brand"
+        ],
+        "cons": [
+          "More expensive per dose"
+        ]
+      },
+      {
+        "name": "L-Theanine + GABA",
+        "asin": "B00QXC1TIA",
+        "price": "$18",
+        "pros": [
+          "Natural ingredients",
+          "Fast-acting",
+          "No grogginess"
+        ],
+        "cons": [
+          "May not work for all"
+        ]
+      },
+      {
+        "name": "Melatonin 5mg (NOW)",
+        "asin": "B0018TZQJU",
+        "price": "$12",
+        "pros": [
+          "Affordable",
+          "Effective for jet lag"
+        ],
+        "cons": [
+          "Habit-forming risk"
+        ]
+      }
+    ],
+    "created": "2026-06-05"
   }
 ]
