@@ -1,13 +1,13 @@
-import { createClient } from "@base44/sdk";
-
-const base44 = createClient({
-  appId: process.env.BASE44_APP_ID,
-  token: process.env.BASE44_SERVICE_TOKEN,
-  serverUrl: process.env.BASE44_API_URL,
-});
+import { createClient } from "/app/node_modules/@base44/sdk/dist/index.js";
 
 export default async function handler(req: Request): Promise<Response> {
   try {
+    const base44 = createClient({
+      appId: process.env.BASE44_APP_ID,
+      token: process.env.BASE44_SERVICE_TOKEN,
+      serverUrl: process.env.BASE44_API_URL,
+    });
+
     const { accessToken: gaToken } = await base44.asServiceRole.connectors.getConnection("google_analytics");
     const { accessToken: gmailToken } = await base44.asServiceRole.connectors.getConnection("gmail");
 
@@ -18,8 +18,7 @@ export default async function handler(req: Request): Promise<Response> {
       );
     }
 
-    // Get GA4 property ID (vitalpicks.org)
-    // First, list all properties to find vitalpicks
+    // Get GA4 property ID
     const propsRes = await fetch(
       "https://www.googleapis.com/analytics/admin/v1beta/properties",
       { headers: { Authorization: `Bearer ${gaToken}` } }
@@ -29,16 +28,14 @@ export default async function handler(req: Request): Promise<Response> {
       throw new Error(`GA properties list failed: ${propsRes.statusText}`);
     }
 
-    const propsData = await propsRes.json();
+    const propsData = await propsRes.json() as any;
     const vitalpicksProperty = propsData.properties?.find((p: any) =>
       p.displayName?.toLowerCase().includes("vitalpicks")
     );
 
     if (!vitalpicksProperty) {
       return new Response(
-        JSON.stringify({
-          error: "VitalPicks property not found in GA4. Please verify the property is created.",
-        }),
+        JSON.stringify({ error: "VitalPicks property not found in GA4." }),
         { status: 404 }
       );
     }
@@ -51,9 +48,7 @@ export default async function handler(req: Request): Promise<Response> {
     const dateStr = yesterday.toISOString().split("T")[0];
 
     const reportRes = await fetch(
-      "https://www.googleapis.com/analytics/data/v1beta/properties/" +
-        propertyId +
-        ":runReport",
+      `https://www.googleapis.com/analytics/data/v1beta/properties/${propertyId}:runReport`,
       {
         method: "POST",
         headers: {
@@ -70,38 +65,22 @@ export default async function handler(req: Request): Promise<Response> {
             { name: "averageSessionDuration" },
           ],
           dimensions: [{ name: "pagePath" }, { name: "country" }],
-          orderBys: [
-            {
-              metric: { metricName: "screenPageViews" },
-              desc: true,
-            },
-          ],
+          orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }],
           limit: 100,
         }),
       }
     );
 
     if (!reportRes.ok) {
-      throw new Error(`GA report query failed: ${reportRes.statusText}`);
+      throw new Error(`GA report failed: ${reportRes.statusText}`);
     }
 
-    const reportData = await reportRes.json();
+    const reportData = await reportRes.json() as any;
 
-    // Parse the report
-    let totalUsers = 0,
-      totalSessions = 0,
-      totalPageviews = 0,
-      avgBounceRate = 0,
-      avgSessionDuration = 0;
-    const pageStats: {
-      page: string;
-      views: number;
-      users: number;
-    }[] = [];
-    const countryStats: {
-      country: string;
-      views: number;
-    }[] = [];
+    let totalUsers = 0, totalSessions = 0, totalPageviews = 0;
+    let avgBounceRate = 0, avgSessionDuration = 0;
+    const pageStats: Array<{ page: string; views: number; users: number }> = [];
+    const countryStats: Array<{ country: string; views: number }> = [];
 
     if (reportData.rows) {
       reportData.rows.forEach((row: any) => {
@@ -120,7 +99,6 @@ export default async function handler(req: Request): Promise<Response> {
         const page = row.dimensionValues[0].value;
         const country = row.dimensionValues[1].value;
 
-        // Track by page
         const existing = pageStats.find((p) => p.page === page);
         if (existing) {
           existing.views += views;
@@ -129,7 +107,6 @@ export default async function handler(req: Request): Promise<Response> {
           pageStats.push({ page, views, users });
         }
 
-        // Track by country
         const existingCountry = countryStats.find((c) => c.country === country);
         if (existingCountry) {
           existingCountry.views += views;
@@ -138,7 +115,6 @@ export default async function handler(req: Request): Promise<Response> {
         }
       });
 
-      // Sort and limit
       pageStats.sort((a, b) => b.views - a.views);
       countryStats.sort((a, b) => b.views - a.views);
 
@@ -148,12 +124,10 @@ export default async function handler(req: Request): Promise<Response> {
       }
     }
 
-    // Build email
     const top5Pages = pageStats.slice(0, 5);
     const top3Countries = countryStats.slice(0, 3);
 
-    const emailHtml = `
-<!DOCTYPE html>
+    const emailHtml = `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -170,7 +144,6 @@ export default async function handler(req: Request): Promise<Response> {
     .table { width: 100%; border-collapse: collapse; }
     .table th { background: #f0f0f0; padding: 10px 12px; text-align: left; font-size: 12px; color: #666; font-weight: 600; border-bottom: 2px solid #ddd; }
     .table td { padding: 10px 12px; border-bottom: 1px solid #eee; }
-    .table tr:hover { background: #fafafa; }
     .footer { margin-top: 24px; padding-top: 24px; border-top: 1px solid #eee; font-size: 12px; color: #666; text-align: center; }
     a { color: #1a73e8; text-decoration: none; }
   </style>
@@ -194,45 +167,26 @@ export default async function handler(req: Request): Promise<Response> {
       </div>
     </div>
 
-    ${
-      totalUsers === 0
-        ? `<p style="background: #fff3cd; padding: 12px; border-radius: 4px; color: #856404;">
-      No visitors yet — that's normal! Google is still crawling and indexing your 181+ pages. Real traffic typically begins 2-4 weeks after indexing completes. Keep publishing articles daily! 🚀
-    </p>`
-        : `
+    ${totalUsers === 0 ? `<p style="background: #fff3cd; padding: 12px; border-radius: 4px; color: #856404;">
+      No visitors yet — that's normal! Google is still crawling and indexing your 192+ pages. Real traffic typically begins 2-4 weeks after indexing. Keep publishing! 🚀
+    </p>` : `
     <div class="stat-row">
       <div class="stat-box">
         <div class="stat-label">Bounce Rate</div>
         <div class="stat-value">${avgBounceRate.toFixed(1)}%</div>
       </div>
       <div class="stat-box">
-        <div class="stat-label">Avg Session Duration</div>
+        <div class="stat-label">Avg Duration</div>
         <div class="stat-value">${(avgSessionDuration / 60).toFixed(1)}m</div>
       </div>
-    </div>
-    `
-    }
+    </div>`}
 
     <div class="section">
       <h2>Top 5 Pages</h2>
       <table class="table">
-        <thead>
-          <tr>
-            <th>Page</th>
-            <th style="text-align: right;">Views</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Page</th><th style="text-align: right;">Views</th></tr></thead>
         <tbody>
-          ${top5Pages
-            .map(
-              (p) => `
-          <tr>
-            <td><code style="background: #f5f5f5; padding: 2px 6px; border-radius: 3px; font-size: 12px;">${p.page}</code></td>
-            <td style="text-align: right; font-weight: 600;">${p.views}</td>
-          </tr>
-          `
-            )
-            .join("")}
+          ${top5Pages.map((p) => `<tr><td style="font-size: 12px;"><code style="background: #f5f5f5; padding: 2px 6px; border-radius: 3px;">${p.page}</code></td><td style="text-align: right; font-weight: 600;">${p.views}</td></tr>`).join("")}
         </tbody>
       </table>
     </div>
@@ -240,48 +194,24 @@ export default async function handler(req: Request): Promise<Response> {
     <div class="section">
       <h2>Top Countries</h2>
       <table class="table">
-        <thead>
-          <tr>
-            <th>Country</th>
-            <th style="text-align: right;">Pageviews</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Country</th><th style="text-align: right;">Pageviews</th></tr></thead>
         <tbody>
-          ${top3Countries
-            .map(
-              (c) => `
-          <tr>
-            <td>${c.country || "Unknown"}</td>
-            <td style="text-align: right; font-weight: 600;">${c.views}</td>
-          </tr>
-          `
-            )
-            .join("")}
+          ${top3Countries.map((c) => `<tr><td>${c.country || "Unknown"}</td><td style="text-align: right; font-weight: 600;">${c.views}</td></tr>`).join("")}
         </tbody>
       </table>
     </div>
 
     <div class="footer">
-      <p>📈 Full analytics available at <a href="https://analytics.google.com">analytics.google.com</a></p>
-      <p>🌐 Your site: <a href="https://vitalpicks.org">vitalpicks.org</a></p>
+      <p>📈 Full stats: <a href="https://analytics.google.com">analytics.google.com</a></p>
+      <p>🌐 Site: <a href="https://vitalpicks.org">vitalpicks.org</a></p>
     </div>
   </div>
 </body>
-</html>
-    `;
+</html>`;
 
-    // Send email via Gmail API
     const emailSubject = `📊 VitalPicks Daily Report — ${dateStr}`;
-    const emailBody = `
-From: vitalpicks@gmail.com
-To: gulrajb@gmail.com
-Subject: ${emailSubject}
-Content-Type: text/html; charset=utf-8
+    const emailBody = `From: vitalpicks@gmail.com\nTo: gulrajb@gmail.com\nSubject: ${emailSubject}\nContent-Type: text/html; charset=utf-8\n\n${emailHtml}`;
 
-${emailHtml}
-    `;
-
-    // Encode as base64 for Gmail API
     const base64Email = Buffer.from(emailBody)
       .toString("base64")
       .replace(/\+/g, "-")
@@ -296,42 +226,26 @@ ${emailHtml}
           Authorization: `Bearer ${gmailToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          raw: base64Email,
-        }),
+        body: JSON.stringify({ raw: base64Email }),
       }
     );
 
     if (!sendRes.ok) {
-      throw new Error(
-        `Gmail send failed: ${sendRes.statusText} - ${await sendRes.text()}`
-      );
+      const errText = await sendRes.text();
+      throw new Error(`Gmail failed: ${sendRes.statusText} - ${errText}`);
     }
 
     return new Response(
       JSON.stringify({
         success: true,
-        message: `Daily digest sent: ${totalUsers} visitors, ${totalSessions} sessions, ${totalPageviews} pageviews`,
-        data: {
-          date: dateStr,
-          visitors: totalUsers,
-          sessions: totalSessions,
-          pageviews: totalPageviews,
-          topPages: top5Pages,
-          topCountries: top3Countries,
-        },
+        message: `Digest sent: ${totalUsers} visitors, ${totalSessions} sessions, ${totalPageviews} views`,
       }),
       { status: 200 }
     );
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error("Daily digest error:", errorMessage);
-
+  } catch (err: any) {
+    console.error("Error:", err);
     return new Response(
-      JSON.stringify({
-        error: errorMessage,
-        type: error instanceof Error ? error.constructor.name : "Unknown",
-      }),
+      JSON.stringify({ error: err.message || "Unknown error" }),
       { status: 500 }
     );
   }
