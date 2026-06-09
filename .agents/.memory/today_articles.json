@@ -1,0 +1,26 @@
+{
+  "date": "2026-06-09",
+  "day": "Tuesday",
+  "theme": "Fitness Gear",
+  "articles": [
+    {
+      "title": "Best Resistance Bands for Home Workouts",
+      "slug": "best-resistance-bands-home-workouts",
+      "keywords": "resistance bands, home workout bands, loop bands, tube bands",
+      "description": "Top-rated resistance bands for strength training and rehabilitation"
+    },
+    {
+      "title": "Best Cable Machine Exercises and Equipment Guide",
+      "slug": "best-cable-machine-exercises-equipment",
+      "keywords": "cable machine, cable exercises, home cable machine, functional trainer",
+      "description": "Complete guide to cable machines, exercises, and best equipment for home gyms"
+    },
+    {
+      "title": "Best Suspension Training Equipment",
+      "slug": "best-suspension-training-equipment",
+      "keywords": "suspension trainer, TRX alternative, bodyweight training",
+      "description": "Top suspension trainers and equipment for functional fitness and workouts"
+    }
+  ],
+  "count": 3
+}
