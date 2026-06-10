@@ -1,142 +1,157 @@
-export default async function dailyDigest(req: Request) {
-  try {
-    const gaToken = process.env.GOOGLE_ANALYTICS_ACCESS_TOKEN || '';
-    const gmailToken = process.env.GMAIL_ACCESS_TOKEN || '';
-    const propertyId = '416847524';
-    const userEmail = 'gulrajb@gmail.com';
+import { createClientFromRequest } from "npm:@base44/sdk@0.8.31";
 
-    // Fetch GA data
-    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-    
-    const gaRes = await fetch(
+interface GAEvent {
+  dimensionValues: Array<{ value: string }>;
+  metricValues: Array<{ value: string }>;
+}
+
+interface AnalyticsResponse {
+  rows?: GAEvent[];
+}
+
+Deno.serve(async (req: Request): Promise<Response> => {
+  try {
+    const base44 = createClientFromRequest(req);
+
+    // Get tokens
+    const gaConnection = await base44.asServiceRole.connectors.getConnection("google_analytics");
+    const gmailConnection = await base44.asServiceRole.connectors.getConnection("gmail");
+
+    const gaToken = gaConnection.accessToken;
+    const gmailToken = gmailConnection.accessToken;
+
+    // Get yesterday's date (IST timezone)
+    const now = new Date();
+    now.setHours(now.getHours() - 5, now.getMinutes() - 30); // IST offset
+    const yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const dateStr = yesterday.toISOString().split("T")[0];
+
+    // Fetch GA4 data for yesterday
+    const propertyId = "443019869"; // vitalpicks.org GA4 property ID
+
+    const gaPayload = {
+      dateRanges: [{ startDate: dateStr, endDate: dateStr }],
+      dimensions: [
+        { name: "pagePath" },
+        { name: "country" },
+      ],
+      metrics: [
+        { name: "activeUsers" },
+        { name: "sessions" },
+        { name: "screenPageViews" },
+        { name: "bounceRate" },
+        { name: "averageSessionDuration" },
+      ],
+      orderBys: [{ metric: { metricName: "screenPageViews" }, descending: true }],
+      limit: 10,
+    };
+
+    const gaResponse = await fetch(
       `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Authorization': `Bearer ${gaToken}`,
-          'Content-Type': 'application/json',
+          Authorization: `Bearer ${gaToken}`,
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          dateRanges: [{ startDate: yesterday, endDate: yesterday }],
-          metrics: [
-            { name: 'activeUsers' },
-            { name: 'sessions' },
-            { name: 'screenPageViews' },
-            { name: 'bounceRate' },
-          ],
-          dimensions: [{ name: 'pagePath' }, { name: 'country' }],
-          orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
-          limit: 100,
-        }),
+        body: JSON.stringify(gaPayload),
       }
     );
 
-    const gaData = await gaRes.json();
-    const rows = gaData.rows || [];
-
-    let totalUsers = 0, totalSessions = 0, totalViews = 0, totalBounce = 0;
-    const pageMap: any = {};
-    const countryMap: any = {};
-
-    rows.forEach((row: any) => {
-      const users = parseInt(row.metricValues?.[0]?.value || '0');
-      const sessions = parseInt(row.metricValues?.[1]?.value || '0');
-      const views = parseInt(row.metricValues?.[2]?.value || '0');
-      const bounce = parseFloat(row.metricValues?.[3]?.value || '0');
-      const pagePath = row.dimensionValues?.[0]?.value || '';
-      const country = row.dimensionValues?.[1]?.value || 'Unknown';
-
-      totalUsers += users;
-      totalSessions += sessions;
-      totalViews += views;
-      totalBounce += bounce;
-
-      if (pagePath && pagePath !== '(not set)') {
-        if (!pageMap[pagePath]) pageMap[pagePath] = { page: pagePath, views: 0 };
-        pageMap[pagePath].views += views;
-      }
-
-      if (country && country !== '(not set)') {
-        if (!countryMap[country]) countryMap[country] = { country, users: 0 };
-        countryMap[country].users += users;
-      }
-    });
-
-    const topPages = Object.values(pageMap)
-      .sort((a: any, b: any) => b.views - a.views)
-      .slice(0, 5);
-    
-    const topCountries = Object.values(countryMap)
-      .sort((a: any, b: any) => b.users - a.users)
-      .slice(0, 5);
-
-    const avgBounce = rows.length > 0 ? (totalBounce / rows.length).toFixed(1) : '0';
-
-    // Format HTML
-    const yesterdayStr = new Date(Date.now() - 86400000).toLocaleDateString('en-US', {
-      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-    });
-
-    const topPagesHtml = topPages
-      .map((p: any, i: number) => `<tr><td style="padding:12px">${i + 1}. ${p.page}</td><td style="padding:12px;text-align:right">${p.views}</td></tr>`)
-      .join('');
-
-    const topCountriesHtml = topCountries
-      .map((c: any, i: number) => `<tr><td style="padding:12px">${i + 1}. ${c.country}</td><td style="padding:12px;text-align:right">${c.users}</td></tr>`)
-      .join('');
-
-    const html = `<!DOCTYPE html><html><body style="font-family:Arial;max-width:600px">
-<h2>VitalPicks Daily Analytics</h2>
-<p>${yesterdayStr}</p>
-<table style="width:100%;border-collapse:collapse">
-<tr><td style="padding:15px;background:#f0f7ff;border:1px solid #ddd"><strong>Users:</strong> ${totalUsers}</td>
-<td style="padding:15px;background:#f0fff0;border:1px solid #ddd"><strong>Sessions:</strong> ${totalSessions}</td></tr>
-<tr><td style="padding:15px;background:#fff8f0;border:1px solid #ddd"><strong>Pageviews:</strong> ${totalViews}</td>
-<td style="padding:15px;background:#f5f0ff;border:1px solid #ddd"><strong>Bounce Rate:</strong> ${avgBounce}%</td></tr>
-</table>
-<h3>Top Pages</h3>
-<table style="width:100%;border-collapse:collapse;border:1px solid #ddd">${topPagesHtml || '<tr><td>No data</td></tr>'}</table>
-<h3>Top Countries</h3>
-<table style="width:100%;border-collapse:collapse;border:1px solid #ddd">${topCountriesHtml || '<tr><td>No data</td></tr>'}</table>
-</body></html>`;
-
-    // Send email
-    const boundary = 'boundary_' + Date.now();
-    const mime = [
-      `To: ${userEmail}`,
-      `Subject: VitalPicks Daily Analytics - ${yesterdayStr}`,
-      'MIME-Version: 1.0',
-      `Content-Type: multipart/alternative; boundary="${boundary}"`,
-      '',
-      `--${boundary}`,
-      'Content-Type: text/html; charset="UTF-8"',
-      '',
-      html,
-      `--${boundary}--`,
-    ].join('\r\n');
-
-    const base64Msg = Buffer.from(mime).toString('base64');
-
-    const emailRes = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${gmailToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ raw: base64Msg }),
-    });
-
-    if (emailRes.ok) {
-      return new Response(JSON.stringify({ success: true, users: totalUsers, sessions: totalSessions, views: totalViews }), {
-        status: 200, headers: { 'Content-Type': 'application/json' }
-      });
-    } else {
-      throw new Error('Email send failed');
+    if (!gaResponse.ok) {
+      throw new Error(`GA API error: ${gaResponse.status}`);
     }
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    return new Response(JSON.stringify({ success: false, error: msg }), {
-      status: 500, headers: { 'Content-Type': 'application/json' }
-    });
+
+    const gaData: AnalyticsResponse = await gaResponse.json();
+
+    // Format email
+    let topPages = "No data yet";
+    let totalSessions = "0";
+    let totalViews = "0";
+
+    if (gaData.rows && gaData.rows.length > 0) {
+      const summaryRow = gaData.rows[0];
+      totalSessions = summaryRow.metricValues[1]?.value || "0";
+      totalViews = summaryRow.metricValues[2]?.value || "0";
+
+      topPages = gaData.rows
+        .slice(0, 5)
+        .map((row, i) => {
+          const page = row.dimensionValues[0]?.value || "Unknown";
+          const views = row.metricValues[2]?.value || "0";
+          return `${i + 1}. ${page.replace(/\//g, "")} — ${views} views`;
+        })
+        .join("\n");
+    }
+
+    const emailSubject = `VitalPicks Daily Report — ${dateStr}`;
+    const emailBody = `📊 VitalPicks Daily Analytics — ${dateStr}
+
+Sessions Yesterday: ${totalSessions}
+Page Views: ${totalViews}
+
+📈 Top 5 Pages:
+${topPages}
+
+Check full stats: https://analytics.google.com
+
+---
+This is an automated report. Your site is growing! 🚀
+`;
+
+    // Send email via Gmail API
+    const emailMessage = [
+      `From: vitalpicks.org <noreply@vitalpicks.org>`,
+      `To: gulrajb@gmail.com`,
+      `Subject: ${emailSubject}`,
+      `Content-Type: text/plain; charset="UTF-8"`,
+      ``,
+      emailBody,
+    ].join("\r\n");
+
+    const encodedMessage = btoa(emailMessage);
+
+    const emailPayload = {
+      raw: encodedMessage,
+    };
+
+    const emailResponse = await fetch(
+      "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${gmailToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(emailPayload),
+      }
+    );
+
+    if (!emailResponse.ok) {
+      throw new Error(`Gmail API error: ${emailResponse.status}`);
+    }
+
+    const result = await emailResponse.json();
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        message: "Daily digest sent",
+        emailId: result.id,
+        date: dateStr,
+      }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    );
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: errorMessage,
+        note: "Connectors may need re-authorization",
+      }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
   }
-}
+});
