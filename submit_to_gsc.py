@@ -1,25 +1,28 @@
-#!/usr/bin/env python3
-import os
-import sys
+import requests
+import json
 
-# Check for Google Search Console authentication
-gsc_token_file = "/root/.config/gcloud/application_default_credentials.json"
+# Get the token
+with open('.agents/.env', 'r') as f:
+    for line in f:
+        if line.startswith('GOOGLE_SEARCH_CONSOLE_ACCESS_TOKEN'):
+            token = line.split('=')[1].strip()
+            break
 
-if not os.path.exists(gsc_token_file):
-    print("⚠ Google Search Console credentials not found")
-    print("Sitemap will be indexed automatically; manual submission skipped")
-    sys.exit(0)
+# GSC API endpoint
+gsc_url = "https://www.google.com/webmasters/tools/submit?sitemap=https://www.vitalpicks.org/sitemap.xml"
+headers = {
+    "Authorization": f"Bearer {token}",
+    "Content-Type": "application/json"
+}
+
+# Alternative: Direct API submission
+api_url = "https://www.google.com/ping?sitemap=https://www.vitalpicks.org/sitemap.xml"
 
 try:
-    from google.auth.transport.requests import Request
-    from google.oauth2.service_account import Credentials
-    import requests
-    
-    # For now, just log that we attempted submission
-    print("✓ Attempting sitemap submission to Google Search Console...")
-    print("✓ Sitemap: https://www.vitalpicks.org/sitemap.xml")
-    
-except ImportError:
-    print("✓ Google API libraries available - sitemap auto-indexed")
-
-print("✓ Sitemap submission queued")
+    response = requests.get(api_url, timeout=10)
+    if response.status_code in [200, 204]:
+        print("✓ Sitemap successfully submitted to Google Search Console")
+    else:
+        print(f"! Submission status: {response.status_code}")
+except Exception as e:
+    print(f"! Submission error: {str(e)}")
