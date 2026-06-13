@@ -1,1 +1,33 @@
-{"timestamp": "2026-06-05T03:31:35.769380", "date": "2026-06-05", "day": "Friday", "theme": "Recovery & Wellness", "articles_added": 3, "articles": ["best-compression-boots-recovery", "best-foam-rolling-techniques-recovery", "best-sleep-supplements-athletes"], "sitemap_submitted": true, "github_pushed": true}
+{
+  "date": "Saturday, June 13, 2026",
+  "day_of_week": "Saturday",
+  "theme": "Home Gym",
+  "articles_created": 3,
+  "new_articles": [
+    {
+      "title": "Best Adjustable Kettlebells for Home Gym",
+      "slug": "best-adjustable-kettlebells-home-gym",
+      "products": 3
+    },
+    {
+      "title": "Best Cable Machine Alternatives for Home Gyms",
+      "slug": "best-cable-machine-alternatives-home-gym",
+      "products": 3
+    },
+    {
+      "title": "Best Home Gym Flooring for Noise Reduction",
+      "slug": "best-home-gym-flooring-noise-reduction",
+      "products": 3
+    }
+  ],
+  "internal_links_added": 3,
+  "articles_updated": [
+    "best-kettlebells.html",
+    "best-home-gym.html",
+    "best-power-rack-attachments.html"
+  ],
+  "sitemap_updated": true,
+  "total_pages": 214,
+  "github_pushed": true,
+  "timestamp": "2026-06-13T03:32:00.341755"
+}
