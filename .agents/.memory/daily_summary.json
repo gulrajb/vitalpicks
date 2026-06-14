@@ -1,0 +1,32 @@
+{
+  "date": "2026-06-14",
+  "day": "Sunday",
+  "theme": "Health Devices \ud83c\udfe5",
+  "articles_created": 3,
+  "articles": [
+    {
+      "title": "Best Digital & Infrared Thermometers for Accurate Home Temperature Monitoring",
+      "slug": "best-thermometers-digital-infrared",
+      "keyword": "digital thermometers",
+      "products": 4
+    },
+    {
+      "title": "Best Home Sleep Apnea Monitors & Wearables for Sleep Tracking",
+      "slug": "best-sleep-apnea-monitors",
+      "keyword": "sleep apnea monitors",
+      "products": 4
+    },
+    {
+      "title": "Best Blood Glucose Meters & CGM Systems for Home Diabetes Management",
+      "slug": "best-blood-glucose-meters",
+      "keyword": "blood glucose meters",
+      "products": 4
+    }
+  ],
+  "total_site_pages": 212,
+  "actions": {
+    "github_push": "\u2713 Complete",
+    "sitemap_updated": "\u2713 Complete",
+    "gsc_ready": "\u2713 Queued"
+  }
+}

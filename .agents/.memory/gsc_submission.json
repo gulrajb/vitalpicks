@@ -1,11 +1,7 @@
 {
-  "date": "2026-06-13T03:31:56.027512",
-  "new_articles": 3,
-  "urls": [
-    "https://www.vitalpicks.org/best-adjustable-kettlebells-home-gym.html",
-    "https://www.vitalpicks.org/best-cable-machine-alternatives-home-gym.html",
-    "https://www.vitalpicks.org/best-home-gym-flooring-noise-reduction.html"
-  ],
-  "sitemap_updated": true,
-  "github_push": true
+  "timestamp": "2026-06-14T03:32:04.274072",
+  "action": "submit_sitemap",
+  "domain": "vitalpicks.org",
+  "sitemap_url": "https://www.vitalpicks.org/sitemap.xml",
+  "status": "queued"
 }
